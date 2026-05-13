@@ -2,6 +2,12 @@
 
 这是使用 Docusaurus classic 模板建立的静态 Minecraft 模组 Wiki。
 
+公开地址：
+
+```text
+https://nking20.github.io/tidal-research-wiki/
+```
+
 ## 本地启动
 
 安装依赖：
@@ -15,8 +21,6 @@ npm install
 ```bash
 npm run start
 ```
-
-默认会在本地启动 Docusaurus 开发站点。
 
 ## 构建
 
@@ -38,27 +42,20 @@ npm run serve
 
 ## GitHub Pages 部署
 
-项目已包含 GitHub Actions workflow：
+项目包含 GitHub Actions workflow：
 
 ```text
 .github/workflows/deploy.yml
 ```
 
-部署步骤：
+部署流程：
 
-1. 将项目推送到 GitHub 仓库。
-2. 在 GitHub 仓库 Settings 中启用 Pages。
-3. Pages Source 选择 GitHub Actions。
+1. 推送到 GitHub 仓库。
+2. 仓库 Settings -> Pages。
+3. Source 选择 GitHub Actions。
 4. 推送到 `main` 分支后自动构建并部署。
 
-如果仓库名不是 `tidal-research-wiki`，需要修改 `docusaurus.config.ts`：
-
-```ts
-baseUrl: '/你的仓库名/',
-projectName: '你的仓库名',
-```
-
-当前配置按以下仓库生成 GitHub Pages 路径：
+当前仓库配置：
 
 ```text
 https://github.com/Nking20/tidal-research-wiki
@@ -70,19 +67,36 @@ https://nking20.github.io/tidal-research-wiki/
 ```text
 docs/
 ├─ intro.md
-├─ install.md
-├─ tidal-observation-card/
-│  ├─ overview.md
-│  └─ config.md
 ├─ tidal-commission/
 │  ├─ overview.md
-│  └─ task-json.md
+│  ├─ gameplay.md
+│  ├─ config.md
+│  ├─ datapack.md
+│  ├─ player-commission.md
+│  └─ examples.md
+├─ tidal-observation-card/
+│  └─ overview.md
 ├─ tidal-market/
+│  └─ overview.md
+├─ modpack/
 │  ├─ overview.md
-│  ├─ shipping-box.md
-│  └─ dynamic-pricing.md
-├─ datapack/
-│  └─ rules.md
-├─ faq.md
+│  └─ examples.md
 └─ changelog.md
+```
+
+## 修改文档
+
+普通文档都在 `docs/` 目录。
+
+首页在：
+
+```text
+src/pages/index.tsx
+src/pages/index.module.css
+```
+
+侧边栏在：
+
+```text
+sidebars.ts
 ```

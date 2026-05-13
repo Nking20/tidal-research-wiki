@@ -3,42 +3,37 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   wikiSidebar: [
     'intro',
-    'install',
-    {
-      type: 'category',
-      label: '潮汐观测卡',
-      collapsed: false,
-      items: [
-        'tidal-observation-card/overview',
-        'tidal-observation-card/config',
-      ],
-    },
     {
       type: 'category',
       label: '潮汐委托',
       collapsed: false,
       items: [
         'tidal-commission/overview',
-        'tidal-commission/task-json',
+        'tidal-commission/gameplay',
+        'tidal-commission/config',
+        'tidal-commission/datapack',
+        'tidal-commission/player-commission',
+        'tidal-commission/examples',
       ],
+    },
+    {
+      type: 'category',
+      label: '潮汐观测卡',
+      collapsed: false,
+      items: ['tidal-observation-card/overview'],
     },
     {
       type: 'category',
       label: '潮汐市场',
       collapsed: false,
-      items: [
-        'tidal-market/overview',
-        'tidal-market/shipping-box',
-        'tidal-market/dynamic-pricing',
-      ],
+      items: ['tidal-market/overview'],
     },
     {
       type: 'category',
-      label: '数据包与魔改',
+      label: '整合包魔改',
       collapsed: false,
-      items: ['datapack/rules'],
+      items: ['modpack/overview', 'modpack/examples'],
     },
-    'faq',
     'changelog',
   ],
 };

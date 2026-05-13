@@ -65,8 +65,8 @@ const config: Config = {
           position: 'left',
         },
         {
-          to: '/docs/datapack/rules',
-          label: '数据包教程',
+          to: '/docs/modpack/overview',
+          label: '整合包魔改',
           position: 'left',
         },
         {
@@ -83,8 +83,8 @@ const config: Config = {
           title: '文档',
           items: [
             {label: '总览', to: '/docs/intro'},
-            {label: '安装教程', to: '/docs/install'},
-            {label: '常见问题', to: '/docs/faq'},
+            {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
+            {label: '整合包魔改', to: '/docs/modpack/overview'},
           ],
         },
         {

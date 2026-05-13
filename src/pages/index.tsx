@@ -7,24 +7,24 @@ import styles from './index.module.css';
 
 const entries = [
   {
-    title: '模组入口',
-    description: '查看潮汐研究社系列模组文档，目前已整理潮汐委托。',
+    title: '模组总览',
+    description: '查看潮汐研究社系列模组目前已经整理的公开文档。',
     to: '/docs/intro',
   },
   {
-    title: '安装教程',
-    description: '查看 Minecraft、NeoForge、可选依赖与服务端安装说明。',
-    to: '/docs/install',
+    title: '潮汐委托',
+    description: '委托板、任务卡、调度令、担保凭证和玩家自定义委托。',
+    to: '/docs/tidal-commission/overview',
   },
   {
-    title: '数据包教程',
-    description: '学习如何通过数据包或 KubeJS 添加、替换和调试委托任务。',
-    to: '/docs/datapack/rules',
+    title: '配置与数据包',
+    description: '查看潮汐委托的配置文件、来源权重和任务 JSON 写法。',
+    to: '/docs/tidal-commission/config',
   },
   {
-    title: '常见问题',
-    description: '整理玩家、服主和整合包作者最容易遇到的问题。',
-    to: '/docs/faq',
+    title: '整合包魔改',
+    description: '整理服务器和整合包作者使用的数据包、KubeJS 与样例。',
+    to: '/docs/modpack/overview',
   },
 ];
 
@@ -44,7 +44,7 @@ export default function Home(): ReactNode {
         <section className={styles.hero}>
           <div className="container">
             <Heading as="h1">潮汐研究社 Wiki</Heading>
-            <p>面向玩家、服主和整合包作者的 Minecraft 模组文档。</p>
+            <p>面向玩家、服务器管理员和整合包作者的 Minecraft 模组文档。</p>
           </div>
         </section>
         <section className={styles.entries}>
