@@ -20,7 +20,14 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '潮汐观测卡',
       collapsed: false,
-      items: ['tidal-observation-card/overview'],
+      items: [
+        'tidal-observation-card/overview',
+        'tidal-observation-card/gameplay',
+        'tidal-observation-card/config',
+        'tidal-observation-card/datapack',
+        'tidal-observation-card/examples',
+        'tidal-observation-card/notes',
+      ],
     },
     {
       type: 'category',

@@ -22,6 +22,11 @@ const entries = [
     to: '/docs/tidal-commission/config',
   },
   {
+    title: '潮汐观测卡',
+    description: '观测等级、奖励池、代券、潮汐轮转和服务端配置同步说明。',
+    to: '/docs/tidal-observation-card/overview',
+  },
+  {
     title: '整合包魔改',
     description: '整理服务器和整合包作者使用的数据包、KubeJS 与样例。',
     to: '/docs/modpack/overview',

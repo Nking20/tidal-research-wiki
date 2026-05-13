@@ -7,15 +7,15 @@ sidebar_position: 1
 
 这里用于整理潮汐研究社系列 Minecraft 模组的公开说明。
 
-当前已整理的内容以 **潮汐委托** 为主，包含模组概述、基础玩法、配置文件、数据包任务写法、玩家自定义委托和整合包魔改样例。
+当前已整理的内容以 **潮汐委托** 和 **潮汐观测卡** 为主，包含模组概述、基础玩法、配置文件、数据包 / KubeJS 写法、样例和必要注意事项。
 
 ## 已整理模组
 
 - **潮汐委托**：围绕委托板、委托卡、任务来源、玩家自定义委托和数据包扩展的任务型模组。
+- **潮汐观测卡**：围绕观测卡、等级奖励池、兑换成本、代券、潮汐轮转和服务端配置同步的卡牌型奖励模组。
 
 ## 计划整理
 
-- **潮汐观测卡**：计划中，当前只保留概述页。
 - **潮汐市场**：计划中，当前只保留概述页。
 
 ## 文档定位
@@ -29,5 +29,7 @@ sidebar_position: 1
 - [潮汐委托概述](./tidal-commission/overview.md)
 - [潮汐委托配置](./tidal-commission/config.md)
 - [潮汐委托数据包](./tidal-commission/datapack.md)
+- [潮汐观测卡概述](./tidal-observation-card/overview.md)
+- [潮汐观测卡配置](./tidal-observation-card/config.md)
 - [整合包魔改样例](./modpack/examples.md)
 - [更新日志](./changelog.md)
