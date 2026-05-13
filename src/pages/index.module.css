@@ -1,0 +1,72 @@
+.hero {
+  padding: 4rem 0 2rem;
+  background: #f4efe4;
+  border-bottom: 1px solid #ddd2bd;
+}
+
+.hero h1 {
+  margin-bottom: 0.75rem;
+  color: #2f261f;
+}
+
+.hero p {
+  max-width: 44rem;
+  margin: 0;
+  color: #5d5145;
+  font-size: 1.15rem;
+}
+
+.entries {
+  padding: 2.5rem 0 4rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: block;
+  min-height: 12rem;
+  padding: 1.25rem;
+  border: 1px solid #ddd2bd;
+  border-radius: 8px;
+  color: inherit;
+  background: #fffaf0;
+  text-decoration: none;
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+.card:hover {
+  border-color: #b8955c;
+  color: inherit;
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.card h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.3rem;
+}
+
+.card p {
+  margin: 0;
+  color: #65584c;
+}
+
+@media screen and (max-width: 996px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .hero {
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
