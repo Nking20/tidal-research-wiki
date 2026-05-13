@@ -116,8 +116,42 @@
   font-weight: 700;
 }
 
-.theme-code-block {
-  border: 1px solid var(--ifm-color-emphasis-200);
+.theme-code-block,
+div[class*='codeBlockContainer'] {
+  border: 1px solid #8e826f !important;
+  background: #fffdf8 !important;
+}
+
+.theme-code-block pre,
+.theme-code-block code,
+div[class*='codeBlockContent'] pre,
+div[class*='codeBlockContent'] code,
+pre code {
+  color: #1f1a14 !important;
+  background: #fffdf8 !important;
+  text-shadow: none !important;
+}
+
+.theme-code-block .token,
+.theme-code-block .token.string,
+.theme-code-block .token.property,
+.theme-code-block .token.number,
+.theme-code-block .token.boolean,
+.theme-code-block .token.punctuation,
+.theme-code-block .token.operator,
+.theme-code-block .token.keyword,
+.theme-code-block .token.plain,
+pre code .token,
+pre code .token.string,
+pre code .token.property,
+pre code .token.number,
+pre code .token.boolean,
+pre code .token.punctuation,
+pre code .token.operator,
+pre code .token.keyword,
+pre code .token.plain {
+  color: #1f1a14 !important;
+  background: transparent !important;
 }
 
 table {
@@ -140,6 +174,10 @@ code {
   color: #4b2f0d !important;
   background: #fff1d2 !important;
   border: 1px solid #d8c6a8;
+}
+
+pre code {
+  border: 0;
 }
 
 table code {
