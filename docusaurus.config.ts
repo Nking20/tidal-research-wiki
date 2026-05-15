@@ -70,6 +70,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/docs/reveal/overview',
+          label: '辑录与揭秘',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/Nking20/tidal-research-wiki',
           label: 'GitHub',
           position: 'right',
@@ -84,6 +89,7 @@ const config: Config = {
           items: [
             {label: '总览', to: '/docs/intro'},
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
+            {label: '辑录与揭秘', to: '/docs/reveal/overview'},
             {label: '整合包魔改', to: '/docs/modpack/overview'},
           ],
         },
@@ -92,6 +98,7 @@ const config: Config = {
           items: [
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '潮汐观测卡', to: '/docs/tidal-observation-card/overview'},
+            {label: '辑录与揭秘', to: '/docs/reveal/overview'},
             {label: '潮汐市场', to: '/docs/tidal-market/overview'},
           ],
         },

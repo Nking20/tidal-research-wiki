@@ -31,6 +31,18 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: '辑录与揭秘',
+      collapsed: false,
+      items: [
+        'reveal/overview',
+        'reveal/gameplay',
+        'reveal/config',
+        'reveal/datapack',
+        'reveal/commands',
+      ],
+    },
+    {
+      type: 'category',
       label: '潮汐市场',
       collapsed: false,
       items: ['tidal-market/overview'],
