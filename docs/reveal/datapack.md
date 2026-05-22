@@ -4,14 +4,14 @@ title: 数据包
 
 # 辑录与揭秘数据包
 
-辑录内容通过数据包提供。整合包作者可以新增来源、新增章节、替换默认内容或调整图标、权重和顺序。
+辑录内容通过数据包提供。整合包作者可以新增来源、新增章节、替换默认内容，或调整图标、权重和顺序。
 
 ## 文件位置
 
 辑录 JSON 放在：
 
 ```text
-data/reveal/re/<来源类>/<辑录>.json
+data/<namespace>/re/<来源类>/<辑录>.json
 ```
 
 示例：
@@ -24,27 +24,27 @@ data/reveal/re/survival_notes/nether_kit.json
 
 - `survival_notes` 是来源类 ID。
 - `nether_kit` 是具体章节 ID。
-- 完整记录 ID 为 `survival_notes/nether_kit`。
+- 完整记录 ID 是 `survival_notes/nether_kit`。
 
 ## 基础格式
 
 ```json
 {
-  "title": "下界前检查",
+  "title": "Nether Travel Kit",
   "icon": "minecraft:flint_and_steel",
   "weight": 10,
   "order": 30,
   "pages": [
     {
       "text": [
-        "进下界前准备打火石、圆石、食物和一组方块。",
-        "第一次进门后先保护传送门，避免恶魂直接破坏入口。"
+        "Before entering the Nether, prepare flint and steel, food, blocks, and gold armor.",
+        "Protect the portal first so a ghast cannot break your only easy return route."
       ]
     },
     {
       "text": [
-        "如果你准备长期探索，建议记录传送门坐标。",
-        "回程路线比临时挖路更重要。"
+        "If you plan a long trip, write down portal coordinates.",
+        "A safe return route is more important than a fast outbound route."
       ]
     }
   ]
@@ -57,37 +57,67 @@ data/reveal/re/survival_notes/nether_kit.json
 | --- | --- |
 | `title` | 章节标题 |
 | `icon` | 解锁后在辑录册中显示的物品图标 |
-| `weight` | 抽取权重 |
+| `weight` | 抽取权重，必须大于 0 |
 | `order` | 顺序或阶段值 |
 | `pages` | 正文页数组 |
-| `pages[].text` | 当前页的文字行 |
+| `pages[].text` | 当前页的文字数组 |
 | `pages[].image` | 可选图片资源路径 |
 
 `weight` 不是百分比。随机时会按同一候选池内所有权重总和计算概率。
 
-## `pool` 与 `random`
+## 自动换行与自动分页
 
-如果来源使用 `pool` 策略，模组会优先解锁 `order` 最小的一批未解锁章节。同一个 `order` 下有多个章节时，再按 `weight` 抽取。
+`pages[].text` 中的每个字符串会按当前正文区域宽度自动换行。如果文字超过一页可显示数量，模组会自动生成后续视觉页。
 
-如果来源使用 `random` 策略，模组会在该来源所有未解锁章节中按 `weight` 抽取。
+你不需要手动把每一句切成固定长度。建议按自然段写，每个数组元素放一段或一句。
 
-建议：
+## 图片页
 
-- 新手教程类内容使用 `pool`，保证先出现基础内容。
-- 传闻、碎片、彩蛋类内容使用 `random`，让解锁顺序更自然。
-
-## 自定义来源
-
-新增来源时需要同时做两件事：
-
-1. 在 `config/reveal.json` 的 `categories` 中添加来源。
-2. 在数据包中创建同名目录并放入辑录 JSON。
-
-示例：
+当前支持在页面中加入一张图片：
 
 ```json
 {
-  "display_name": "矿洞记录",
+  "image": "reveal:textures/gui/example_note.png",
+  "text": [
+    "This page starts with an image, then continues with text."
+  ]
+}
+```
+
+图片资源应放在资源包路径中，例如：
+
+```text
+assets/reveal/textures/gui/example_note.png
+```
+
+如果只写 `image` 不写 `text`，这一页就可以作为纯图片页使用。当前图片大小由界面自动计算；多图、图注、对齐和自定义尺寸暂未作为正式字段提供。
+
+## `pool`、`random` 与 `ordered`
+
+解锁策略在 `config/reveal.json` 的 `categories.<id>.unlock_strategy` 中配置。
+
+- `pool`：优先解锁 `order` 最小的一批未解锁章节；同一个 `order` 下再按 `weight` 抽取。
+- `random`：从该来源所有未解锁章节中按 `weight` 抽取。
+- `ordered`：按 `order` 和章节 ID 顺序解锁，适合教程链。
+
+建议：
+
+- 新手教程、工具提示类内容使用 `ordered` 或 `pool`。
+- 传闻、碎片、彩蛋类内容使用 `random`。
+
+## 自定义来源
+
+新增来源时需要同时做三件事：
+
+1. 在 `config/reveal.json` 的 `categories` 中添加来源。
+2. 在数据包中创建同名目录并放入辑录 JSON。
+3. 在 `recipes` 中添加目标为该来源的揭秘配方。
+
+示例来源：
+
+```json
+{
+  "display_name": "Cave Notes",
   "icon": "minecraft:iron_ore",
   "unlock_strategy": "pool"
 }
@@ -99,25 +129,25 @@ data/reveal/re/survival_notes/nether_kit.json
 data/reveal/re/cave_notes/
 ```
 
-如果要让揭秘集能解锁这个来源，还需要在 `recipes` 中添加目标为 `cave_notes` 的配方。
+如果数据包中有 `cave_notes`，但 config 里没有 `cave_notes`，这个来源不会显示，也不会被揭秘集解锁。这是为了让整合包作者能删除默认来源并完全替换内容。
 
 ## 标签配方
 
 揭秘配方支持物品标签。标签可以由数据包或 KubeJS 提供。
 
-示例标签：
+原版唱片标签示例：
 
 ```text
 data/minecraft/tags/item/creeper_drop_music_discs.json
 ```
 
-在自定义来源中，也可以创建自己的标签：
+自定义标签示例：
 
 ```text
 data/reveal/tags/item/cave_clues.json
 ```
 
-然后在配置中引用：
+配置中引用：
 
 ```json
 {
@@ -127,3 +157,12 @@ data/reveal/tags/item/cave_clues.json
   "target": "cave_notes"
 }
 ```
+
+写完后建议执行：
+
+```text
+/reload
+/reveal doctor
+```
+
+`doctor` 可以帮助检查标签为空、来源缺失、配方目标缺失等问题。
