@@ -167,4 +167,27 @@ abandon5
 /trs doctor
 ```
 
+观测模式可以直接用指令切换，并会自动写入 `trsset.json5` 后重载：
+
+```text
+/trs mode get
+/trs mode set manual
+/trs mode set random_single
+/trs mode set blind_level
+```
+
+玩家统计和观测记录导出：
+
+```text
+/trs stats player <玩家>
+/trs stats export
+```
+
+统计文件位于：
+
+```text
+config/trs/analytics/player_stats.csv
+config/trs/analytics/observations.csv
+```
+
 如果重载失败，模组会保留旧配置。建议先看错误提示和 `latest.log`，修正后再重载。
