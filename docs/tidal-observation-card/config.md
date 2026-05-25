@@ -95,8 +95,10 @@ abandon5
 | `ui.visible_level_slots` | 灰卡可显示的等级档位 |
 | `ui.enable_flip_animation` | 是否启用翻牌动画 |
 | `cards.page_count` | 观测卡页数，每页 12 张 |
-| `cards.observe_mode` | `manual` 或 `random_single` |
+| `cards.observe_mode` | `manual`、`random_single` 或 `blind_level` |
 | `cards.random_single.weights` | 随机单等级模式下 I 到 V 的权重 |
+| `cards.blind_level.cost_level` | 隐藏等级模式下用于计算观测成本的等级，默认 3 |
+| `cards.blind_level.weights` | 隐藏等级模式下 I 到 V 的实际等级权重 |
 | `refresh.mode` | `fixed_daily`、`interval` 或 `manual_only` |
 | `refresh.interval_minutes` | `interval` 模式下的真实时间间隔 |
 | `observe_draw.enabled` | 是否启用观测开奖动画 |
@@ -109,6 +111,18 @@ abandon5
 ```
 
 这表示界面显示三个按钮 `I`、`II`、`III`，但它们实际对应原始等级 1、3、5。
+
+隐藏等级模式示例：
+
+```json
+"observe_mode": "blind_level",
+"blind_level": {
+  "cost_level": 3,
+  "weights": [20, 25, 30, 18, 7]
+}
+```
+
+这表示灰卡不提前显示等级，观测成本按 III 档计算，翻开时再按权重随机 I 到 V 的实际等级。
 
 ## tidal_spin.json5
 
