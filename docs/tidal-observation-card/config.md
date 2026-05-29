@@ -10,18 +10,86 @@ title: 配置
 config/trs/
 ```
 
-服务器环境下，配置以服务端为准。客户端进入服务器后会同步服务端配置。
+服务器环境下，实际玩法以服务端配置为准。客户端进入服务器后会同步服务端的等级、奖励池、界面规则和轮转配置。
 
-## tidal_levels.json5
+## 配置文件
 
-`tidal_levels.json5` 用于配置五个观测等级的成本和货币。
+| 文件 | 用途 |
+| --- | --- |
+| `trsset.json5` | 界面、页数、观测模式、刷新模式、出生赠卡、动画等基础规则 |
+| `tidal_levels.json5` | 五个观测等级的观测货币、观测成本和兑换货币 |
+| `tidal_pools.json5` | 观测奖励池、放弃补偿池、奖励数量和兑换价格 |
+| `tidal_spin.json5` | 潮汐轮转入口、点数、微调成本、月相修正 |
+
+## trsset.json5
+
+`trsset.json5` 是刷新规则的主配置文件。新版本不再推荐在 `tidal_levels.json5` 中配置刷新时间。
 
 常用字段：
 
 | 字段 | 说明 |
 | --- | --- |
-| `refresh_hour` | 固定每日刷新模式下的刷新小时 |
-| `refresh_minute` | 固定每日刷新模式下的刷新分钟 |
+| `ui.visible_level_slots` | 灰卡可显示的等级档位 |
+| `ui.enable_flip_animation` | 是否启用翻牌动画 |
+| `cards.page_count` | 观测卡页数，每页 12 张 |
+| `cards.observe_mode` | `manual`、`random_single` 或 `blind_level` |
+| `cards.random_single.weights` | 随机单等级模式下 I 到 V 的权重 |
+| `cards.blind_level.cost_level` | 隐藏等级模式下用于计算观测成本的等级，默认 3 |
+| `cards.blind_level.weights` | 隐藏等级模式下 I 到 V 的实际等级权重 |
+| `refresh.mode` | 刷新模式 |
+| `refresh.hour` / `refresh.minute` | `world_daily`、`fixed_daily`、`real_daily` 使用的刷新时间 |
+| `refresh.interval_minutes` | `interval` 模式下的真实时间间隔 |
+| `observe_draw.enabled` | 是否启用观测开奖动画 |
+| `misc.grant_starter_card_on_first_join` | 首次进入世界是否给予观测卡 |
+
+刷新模式：
+
+| 模式 | 说明 |
+| --- | --- |
+| `world_daily` | 按 Minecraft 世界时间刷新。`hour` / `minute` 表示游戏内时间；世界关闭时不会继续计时。 |
+| `fixed_daily` | 旧名称，兼容 `world_daily`。 |
+| `real_daily` | 按服务器本地现实时间每天固定时间刷新。`hour` / `minute` 表示服务器本地时间。 |
+| `interval` | 按现实时间间隔刷新，使用 `interval_minutes`。 |
+| `manual_only` | 不自动刷新，只通过管理员操作刷新。 |
+
+示例：
+
+```json
+"refresh": {
+  "mode": "world_daily",
+  "hour": 7,
+  "minute": 0,
+  "interval_minutes": 2880
+}
+```
+
+48 小时刷新一次：
+
+```json
+"refresh": {
+  "mode": "interval",
+  "interval_minutes": 2880
+}
+```
+
+每天服务器本地时间 6:00 刷新：
+
+```json
+"refresh": {
+  "mode": "real_daily",
+  "hour": 6,
+  "minute": 0
+}
+```
+
+## tidal_levels.json5
+
+`tidal_levels.json5` 只负责五个观测等级的成本和货币。
+
+常用字段：
+
+| 字段 | 说明 |
+| --- | --- |
 | `levels.<等级>.observe_currency` | 对应等级的观测货币 |
 | `levels.<等级>.observe_cost` | 对应等级的观测成本 |
 | `levels.<等级>.redeem_currency` | 对应等级的兑换货币 |
@@ -30,8 +98,6 @@ config/trs/
 
 ```json
 {
-  "refresh_hour": 7,
-  "refresh_minute": 0,
   "levels": {
     "1": {
       "observe_currency": "minecraft:gold_ingot",
@@ -41,6 +107,8 @@ config/trs/
   }
 }
 ```
+
+兼容说明：旧版本 `tidal_levels.json5` 中的 `refresh_hour` 和 `refresh_minute` 仍可被读取，不会导致崩溃，但新版本不会再把它们作为主刷新配置。
 
 ## tidal_pools.json5
 
@@ -78,51 +146,11 @@ abandon5
 | `components` | 物品组件，用于附魔、药水等复杂物品 |
 | `custom_data` | 自定义数据 |
 
-权重不是百分比。实际概率按：
+权重不是百分比。实际概率为：
 
 ```text
 单个条目权重 / 同池所有有效条目权重总和
 ```
-
-## trsset.json5
-
-`trsset.json5` 控制界面、卡牌页数、观测模式、刷新模式和基础规则。
-
-常用字段：
-
-| 字段 | 说明 |
-| --- | --- |
-| `ui.visible_level_slots` | 灰卡可显示的等级档位 |
-| `ui.enable_flip_animation` | 是否启用翻牌动画 |
-| `cards.page_count` | 观测卡页数，每页 12 张 |
-| `cards.observe_mode` | `manual`、`random_single` 或 `blind_level` |
-| `cards.random_single.weights` | 随机单等级模式下 I 到 V 的权重 |
-| `cards.blind_level.cost_level` | 隐藏等级模式下用于计算观测成本的等级，默认 3 |
-| `cards.blind_level.weights` | 隐藏等级模式下 I 到 V 的实际等级权重 |
-| `refresh.mode` | `fixed_daily`、`interval` 或 `manual_only` |
-| `refresh.interval_minutes` | `interval` 模式下的真实时间间隔 |
-| `observe_draw.enabled` | 是否启用观测开奖动画 |
-| `misc.grant_starter_card_on_first_join` | 首次进入世界是否给予观测卡 |
-
-`visible_level_slots` 示例：
-
-```json
-"visible_level_slots": [1, 3, 5]
-```
-
-这表示界面显示三个按钮 `I`、`II`、`III`，但它们实际对应原始等级 1、3、5。
-
-隐藏等级模式示例：
-
-```json
-"observe_mode": "blind_level",
-"blind_level": {
-  "cost_level": 3,
-  "weights": [20, 25, 30, 18, 7]
-}
-```
-
-这表示灰卡不提前显示等级，观测成本按 III 档计算，翻开时再按权重随机 I 到 V 的实际等级。
 
 ## tidal_spin.json5
 
@@ -153,7 +181,7 @@ abandon5
 
 如果序列用完，后续会继续使用最后一个值。
 
-## 热重载与检查
+## 管理员指令
 
 配置修改后可使用：
 
@@ -161,19 +189,26 @@ abandon5
 /trs reload
 ```
 
-配置检查可使用：
+配置检查：
 
 ```text
 /trs doctor
 ```
 
-观测模式可以直接用指令切换，并会自动写入 `trsset.json5` 后重载：
+观测模式切换：
 
 ```text
 /trs mode get
 /trs mode set manual
 /trs mode set random_single
 /trs mode set blind_level
+```
+
+手动刷新玩家观测卡：
+
+```text
+/trs refresh self
+/trs refresh player <玩家>
 ```
 
 玩家统计和观测记录导出：
@@ -190,4 +225,4 @@ config/trs/analytics/player_stats.csv
 config/trs/analytics/observations.csv
 ```
 
-如果重载失败，模组会保留旧配置。建议先看错误提示和 `latest.log`，修正后再重载。
+如果 `/trs reload` 失败，模组会保留旧配置。修正错误后再次执行 `/trs reload` 即可。

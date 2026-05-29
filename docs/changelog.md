@@ -4,6 +4,14 @@ title: 更新日志
 
 # 更新日志
 
+## 潮汐观测卡 1.0.22 之后
+
+- 调整刷新配置结构：`trsset.json5` 的 `refresh` 段作为刷新规则主配置来源。
+- 新增 `world_daily`、`real_daily`、`interval`、`manual_only` 刷新模式说明；`fixed_daily` 保留为旧名称兼容。
+- 兼容旧版 `tidal_levels.json5` 中的 `refresh_hour` / `refresh_minute` 字段，旧配置升级不会因保留旧字段直接崩溃。
+- 新增正式手动刷新指令：`/trs refresh self` 与 `/trs refresh player <玩家>`。
+- 补全文档中的刷新模式、管理员指令、旧配置升级和服务端同步说明。
+
 ## 潮汐观测卡 1.0.21 之后
 
 - 新增隐藏等级观测模式：灰卡不提前显示真实等级，观测成本按配置的默认档位计算，翻开后再随机决定实际等级与奖励。
