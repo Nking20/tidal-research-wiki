@@ -19,7 +19,8 @@ config/trs/
 | `trsset.json5` | 界面、页数、观测模式、刷新模式、出生赠卡、动画等基础规则 |
 | `tidal_levels.json5` | 五个观测等级的观测货币、观测成本和兑换货币 |
 | `tidal_pools.json5` | 观测奖励池、放弃补偿池、奖励数量和兑换价格 |
-| `tidal_spin.json5` | 潮汐轮转入口、点数、微调成本、月相修正 |
+| `tidal_spin.json5` | 潮汐值获取、三档轮转模式、点数、微调成本和月相修正 |
+| `river_god.json5` | 漂流瓶与河神概率、满意度、正负结果、效果和独立奖励池 |
 
 ## trsset.json5
 
@@ -154,15 +155,25 @@ abandon5
 
 ## tidal_spin.json5
 
-`tidal_spin.json5` 控制潮汐轮转。
+`tidal_spin.json5` 控制潮汐值与三档潮汐轮转。
 
 常用字段：
 
 | 字段 | 说明 |
 | --- | --- |
 | `enabled` | 是否启用潮汐轮转 |
-| `entry.enabled` | 进入轮转是否需要入场成本 |
-| `entry.cost_multiplier` | 入场成本倍率 |
+| `progress.stage1_max` | 第一段潮汐值上限；I～II 级操作最多积累到这里 |
+| `progress.stage2_max` | 第二段潮汐值上限；III～IV 级操作最多积累到这里 |
+| `progress.stage3_max` | 潮汐值总上限；V 级操作可以积累到这里 |
+| `progress.observe_gain_by_level` | I～V 级观测获得的潮汐值 |
+| `progress.redeem_gain_by_level` | I～V 级兑换获得的潮汐值 |
+| `progress.abandon_gain_by_level` | I～V 级放弃获得的潮汐值 |
+| `modes.shallow_cost` | 浅潮消耗 |
+| `modes.returning_cost` | 回潮消耗 |
+| `modes.deep_cost` | 深潮消耗 |
+| `modes.symbol_count_by_mode` | 浅潮、回潮、深潮各自使用的符号数量 |
+| `modes.starting_points_by_mode` | 三种模式的初始操作点 |
+| `modes.reward_levels_by_mode` | 三种模式按牌型对应的奖励等级 |
 | `points.base` | 初始潮汐点 |
 | `points.full_moon_bonus` | 满月额外潮汐点 |
 | `costs.lock` | 连续锁定位置的成本序列 |
@@ -180,6 +191,82 @@ abandon5
 ```
 
 如果序列用完，后续会继续使用最后一个值。
+
+默认潮汐值示例：
+
+```json
+"progress": {
+  "stage1_max": 300,
+  "stage2_max": 1200,
+  "stage3_max": 3600,
+  "observe_gain_by_level": [20, 28, 55, 85, 140],
+  "redeem_gain_by_level": [35, 50, 95, 150, 250],
+  "abandon_gain_by_level": [12, 18, 35, 55, 90]
+},
+"modes": {
+  "shallow_cost": 100,
+  "returning_cost": 400,
+  "deep_cost": 1000,
+  "symbol_count_by_mode": [5, 6, 7],
+  "starting_points_by_mode": [36, 42, 50]
+}
+```
+
+回潮除了需要支付 `returning_cost`，玩家当前潮汐值还必须超过第一段上限；深潮同理，必须超过第二段上限。因此修改模式消耗时，也要同时考虑三段上限。
+
+`entry` 段属于旧版轮转入口兼容配置。当前三档轮转主要使用 `modes` 中的潮汐值消耗。
+
+## river_god.json5
+
+`river_god.json5` 控制漂流瓶与河神钓鱼奇遇。
+
+常用字段：
+
+| 字段 | 说明 |
+| --- | --- |
+| `enabled` | 是否启用漂流瓶与河神玩法 |
+| `encounter_chance_percent` | 每次真正钓到物品时自然遇见河神的概率 |
+| `bottle_chance_percent` | 未遇见河神时，本次渔获被替换为漂流瓶的概率 |
+| `cautious_satisfaction_percent` | 较稳回答的基础满意概率 |
+| `greedy_satisfaction_percent` | 高风险回答的基础满意概率 |
+| `variety_attempts` | 额外渔获尝试避开重复物品的次数 |
+| `blessing_weight` | 满意结果中幸运效果的权重 |
+| `bounty_weight` | 满意结果中额外原版渔获的权重 |
+| `gift_weight` | 满意结果中河神赠礼池的权重 |
+| `misfortune_weight` | 不满意结果中霉运效果的权重 |
+| `confiscated_weight` | 不满意结果中没收原物的权重 |
+| `failure_pool` | 没收原物时的独立失败返还池 |
+| `gift_pool` | 河神满意时使用的专属赠礼池 |
+
+幸运与霉运分别提供较稳和高风险两套等级、持续时间配置，例如：
+
+```json
+cautious_luck_level: 1,
+cautious_luck_seconds: 300,
+greedy_unluck_level: 2,
+greedy_unluck_seconds: 300,
+```
+
+权重不必合计为100，系统会按同组有效权重的比例抽取一种结果。
+
+## 游戏内奖励池编辑器
+
+拥有权限等级2的玩家可以执行：
+
+```text
+/trs config
+```
+
+编辑器目前用于维护 `tidal_pools.json5` 中五个等级的正常奖励池，支持：
+
+- 修改物品ID或物品标签。
+- 修改权重、数量上下限和兑换价格上下限。
+- 新增空条目、复制或删除条目。
+- 将主手物品或背包物品映射为奖励。
+- 保留附魔、药水等高级物品组件与自定义数据。
+- 保存后自动重载，并显示输入校验错误。
+
+复杂配置修改前仍建议备份 `tidal_pools.json5`。编辑器不用于修改放弃池、潮汐轮转或河神奖励池。
 
 ## 管理员指令
 
@@ -217,6 +304,15 @@ abandon5
 /trs stats player <玩家>
 /trs stats export
 ```
+
+河神指令：
+
+```text
+/trs rivergod stats
+/trs rivergod force
+```
+
+`stats` 查看自己的河神遭遇与结果统计；`force` 需要权限等级2，使执行者下一次真正钓到物品时必定遇见河神。
 
 统计文件位于：
 

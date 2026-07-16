@@ -76,6 +76,21 @@ title: 样例
 
 ```json
 {
+  "progress": {
+    "stage1_max": 300,
+    "stage2_max": 1200,
+    "stage3_max": 3600,
+    "observe_gain_by_level": [20, 28, 55, 85, 140],
+    "redeem_gain_by_level": [35, 50, 95, 150, 250],
+    "abandon_gain_by_level": [12, 18, 35, 55, 90]
+  },
+  "modes": {
+    "shallow_cost": 100,
+    "returning_cost": 400,
+    "deep_cost": 1000,
+    "symbol_count_by_mode": [5, 6, 7],
+    "starting_points_by_mode": [36, 42, 50]
+  },
   "points": {
     "base": 17,
     "full_moon_bonus": 3
@@ -92,9 +107,35 @@ title: 样例
 
 说明：
 
+- I～II 级操作最多把潮汐值积累到 `stage1_max`，III～IV 级最多到 `stage2_max`。
+- 浅潮、回潮、深潮分别消耗100、400、1000潮汐值。
 - 锁定成本会按序列递增。
 - 双刷、三刷和偏流会根据使用次数继续增加成本。
 - 创造模式是否无视成本由 `tidal_spin.json5` 中的 `creative_free` 控制。
+
+## 河神概率与结果权重
+
+```json
+{
+  "enabled": true,
+  "encounter_chance_percent": 3,
+  "bottle_chance_percent": 6,
+  "cautious_satisfaction_percent": 55,
+  "greedy_satisfaction_percent": 30,
+  "blessing_weight": 40,
+  "bounty_weight": 40,
+  "gift_weight": 20,
+  "misfortune_weight": 50,
+  "confiscated_weight": 50
+}
+```
+
+说明：
+
+- 先判断自然河神；未触发时才判断漂流瓶。
+- 满意后只在幸运、额外渔获和赠礼中抽取一种结果。
+- 不满意后只在霉运和没收中抽取一种结果。
+- 这些数值是权重或百分比，不需要相加为100。
 
 ## 检查配置
 
