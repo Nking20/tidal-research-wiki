@@ -1,26 +1,35 @@
 ---
-title: 魔改总览
+title: 数据包与魔改规则
 ---
 
-# 整合包魔改总览
+# 数据包与魔改规则
 
-这一栏用于整理多个潮汐研究社模组共用的魔改规则。
+## 潮汐委托 1.4.0 路径
 
-目前已整理的实际内容主要来自潮汐委托。未来如果潮汐观测卡、潮汐市场也开放配置或数据包接口，可以继续放在这里。
-
-## 推荐做法
-
-- 用配置文件控制全局规则。
-- 用数据包或 KubeJS 添加任务、交易、来源或奖励池。
-- 用独立文件夹区分不同模组的魔改内容。
-- 服务端环境中，以服务端配置和数据包为准。
-
-## 常见目录
+潮汐委托的数据包资源目录为：
 
 ```text
-config/
-kubejs/data/
-datapacks/<pack_name>/data/
+kubejs/data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
 ```
 
-具体文件路径以对应模组文档为准。
+或普通数据包：
+
+```text
+datapacks/<数据包>/data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
+```
+
+运行时任务目录则是：
+
+```text
+config/tidalcommission/tasks/
+```
+
+数据包任务适合在首次生成服务端任务配置时提供初始内容；已运行的服务器应直接维护 `config/tidalcommission/tasks/`，改完后运行 `/tc reload`。
+
+## 推荐调试顺序
+
+1. 确认来源在 `commission_rules.json` 中启用且权重大于 0。
+2. 确认任务 JSON 使用正确的 `tidal_commission_tasks` 路径和当前字段名。
+3. 执行 `/tc reload`。
+4. 执行 `/tc doctor`。
+5. 使用阶段规则时，再执行 `/tc doctor <玩家>`。

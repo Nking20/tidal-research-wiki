@@ -12,6 +12,7 @@ const sidebars: SidebarsConfig = {
         'tidal-commission/gameplay',
         'tidal-commission/config',
         'tidal-commission/datapack',
+        'tidal-commission/stages',
         'tidal-commission/player-commission',
         'tidal-commission/examples',
       ],
@@ -49,7 +50,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '整合包魔改',
+      label: '数据包与魔改',
       collapsed: false,
       items: ['modpack/overview', 'modpack/examples'],
     },
