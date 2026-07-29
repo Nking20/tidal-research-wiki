@@ -1,168 +1,109 @@
 ---
-title: 数据包
+sidebar_position: 4
+title: 条目数据与数据包
 ---
 
-# 辑录与揭秘数据包
+# 条目数据与数据包
 
-辑录内容通过数据包提供。整合包作者可以新增来源、新增章节、替换默认内容，或调整图标、权重和顺序。
-
-## 文件位置
-
-辑录 JSON 放在：
+Reveal 的条目是 JSON。当前默认的 120 条中文内容内置在模组 JAR 的 `data/reveal/re/` 下，并在首次创建 `config/reveal/` 时导出为可编辑文件：
 
 ```text
-data/<namespace>/re/<来源类>/<辑录>.json
+config/reveal/entries/<类别 ID>/<条目 ID>.json
 ```
 
-示例：
+游戏内编辑器保存的条目也写入这个目录。修改后用 `/reveal reload` 生效。
+
+运行中的条目数据库读取 `config/reveal/entries/`，不会在每次 `/reload` 时直接使用数据包 JSON。数据包的 `data/<命名空间>/re/` 是可分发的“导出源”：首次初始化会自动导出，后续可用 `/reveal export-defaults` 补充尚不存在的条目。
+
+## 最小条目示例
+
+先在 `config/reveal/reveal.json` 的 `categories` 中创建 `harbor_notes`，再建立：
 
 ```text
-data/reveal/re/survival_notes/nether_kit.json
+config/reveal/entries/harbor_notes/first_shipment.json
 ```
 
-其中：
-
-- `survival_notes` 是来源类 ID。
-- `nether_kit` 是具体章节 ID。
-- 完整记录 ID 是 `survival_notes/nether_kit`。
-
-## 基础格式
+内容如下：
 
 ```json
 {
-  "title": "Nether Travel Kit",
-  "icon": "minecraft:flint_and_steel",
-  "weight": 10,
-  "order": 30,
+  "title": "第一批货物",
+  "icon": "minecraft:chest",
+  "weight": 1,
+  "order": 0,
+  "experience_reward": -1,
   "pages": [
     {
       "text": [
-        "Before entering the Nether, prepare flint and steel, food, blocks, and gold armor.",
-        "Protect the portal first so a ghast cannot break your only easy return route."
+        "潮水退去后，码头木板上留下了盐霜。",
+        "清单上写着十二箱货物，仓库里却只有十一箱。"
       ]
     },
     {
       "text": [
-        "If you plan a long trip, write down portal coordinates.",
-        "A safe return route is more important than a fast outbound route."
+        "最后一箱没有编号。",
+        "箱盖内侧刻着：不要在涨潮时打开。"
       ]
     }
   ]
 }
 ```
 
-## 字段说明
-
 | 字段 | 说明 |
 | --- | --- |
-| `title` | 章节标题 |
-| `icon` | 解锁后在辑录册中显示的物品图标 |
-| `weight` | 抽取权重，必须大于 0 |
-| `order` | 顺序或阶段值 |
-| `pages` | 正文页数组 |
-| `pages[].text` | 当前页的文字数组 |
-| `pages[].image` | 可选图片资源路径 |
+| `title` | 条目标题。 |
+| `icon` | 物品 ID 图标。 |
+| `weight` | 随机解锁权重；数值越高越容易从同一类别中被抽到。 |
+| `order` | 目录排序值。 |
+| `experience_reward` | 可选；`-1` 或省略表示继承类别与根配置，`0` 表示无经验奖励。 |
+| `pages` | 阅读页列表。 |
+| `pages[].text` | 每行正文文本。 |
+| `pages[].image` | 可选纹理资源位置，例如 `harbor_pack:textures/gui/story/first_shipment.png`；可与 `text` 同时使用。 |
 
-`weight` 不是百分比。随机时会按同一候选池内所有权重总和计算概率。
+页面至少要有 `text` 或 `image` 之一。
 
-## 自动换行与自动分页
+未填写时，`weight` 默认为 `10`，`order` 默认为 `1000`，`experience_reward` 默认为 `-1`。`weight` 小于等于 `0` 的条目不会进入正常揭秘候选。
 
-`pages[].text` 中的每个字符串会按当前正文区域宽度自动换行。如果文字超过一页可显示数量，模组会自动生成后续视觉页。
+## 用数据包分发内容
 
-你不需要手动把每一句切成固定长度。建议按自然段写，每个数组元素放一段或一句。
-
-## 图片页
-
-当前支持在页面中加入一张图片：
-
-```json
-{
-  "image": "reveal:textures/gui/example_note.png",
-  "text": [
-    "This page starts with an image, then continues with text."
-  ]
-}
-```
-
-图片资源应放在资源包路径中，例如：
+数据包的路径为：
 
 ```text
-assets/reveal/textures/gui/example_note.png
+<数据包根目录>/data/<命名空间>/re/<类别 ID>/<条目 ID>.json
 ```
 
-如果只写 `image` 不写 `text`，这一页就可以作为纯图片页使用。当前图片大小由界面自动计算；多图、图注、对齐和自定义尺寸暂未作为正式字段提供。
-
-## `pool`、`random` 与 `ordered`
-
-解锁策略在 `config/reveal.json` 的 `categories.<id>.unlock_strategy` 中配置。
-
-- `pool`：优先解锁 `order` 最小的一批未解锁章节；同一个 `order` 下再按 `weight` 抽取。
-- `random`：从该来源所有未解锁章节中按 `weight` 抽取。
-- `ordered`：按 `order` 和章节 ID 顺序解锁，适合教程链。
-
-建议：
-
-- 新手教程、工具提示类内容使用 `ordered` 或 `pool`。
-- 传闻、碎片、彩蛋类内容使用 `random`。
-
-## 自定义来源
-
-新增来源时需要同时做三件事：
-
-1. 在 `config/reveal.json` 的 `categories` 中添加来源。
-2. 在数据包中创建同名目录并放入辑录 JSON。
-3. 在 `recipes` 中添加目标为该来源的揭秘配方。
-
-示例来源：
-
-```json
-{
-  "display_name": "Cave Notes",
-  "icon": "minecraft:iron_ore",
-  "unlock_strategy": "pool"
-}
-```
-
-对应目录：
+例如数据包 `harbor_pack` 中的同一条目：
 
 ```text
-data/reveal/re/cave_notes/
+data/harbor_pack/re/harbor_notes/first_shipment.json
 ```
 
-如果数据包中有 `cave_notes`，但 config 里没有 `cave_notes`，这个来源不会显示，也不会被揭秘集解锁。这是为了让整合包作者能删除默认来源并完全替换内容。
+类别 ID 仍必须在 `config/reveal/reveal.json` 的 `categories` 中存在。数据包适合把内容与整合包资源一起发布；`config/reveal/entries/` 则是实际运行和本地快速迭代的位置。
 
-## 标签配方
+需要特别注意：
 
-揭秘配方支持物品标签。标签可以由数据包或 KubeJS 提供。
+- 首次创建 `config/reveal/` 时，当前启用的数据包条目会自动导出。
+- 已经初始化过的世界/实例，需要执行 `/reveal export-defaults` 才会把新增资源导出。
+- 导出命令不会覆盖已有文件。要用数据包新版替换同名条目，应先备份并删除对应的 `config/reveal/entries/...json`，再执行导出；或直接手动合并内容。
+- `/reveal reload` 只重读主配置与 `config/reveal/entries/`，不会覆盖本地条目。
 
-原版唱片标签示例：
+## 导出、编辑与校验
 
-```text
-data/minecraft/tags/item/creeper_drop_music_discs.json
-```
+```mcfunction
+# 把内置默认条目导出到 config/reveal/entries/（不覆盖已有文件）
+/reveal export-defaults
 
-自定义标签示例：
+# 重新读取配置与条目
+/reveal reload
 
-```text
-data/reveal/tags/item/cave_clues.json
-```
-
-配置中引用：
-
-```json
-{
-  "inputs": [
-    {"tag": "reveal:cave_clues"}
-  ],
-  "target": "cave_notes"
-}
-```
-
-写完后建议执行：
-
-```text
-/reload
+# 检查空类别、无效物品、标签和不匹配的条目类别
 /reveal doctor
 ```
 
-`doctor` 可以帮助检查标签为空、来源缺失、配方目标缺失等问题。
+:::tip
+先执行导出命令，再复制一个现有条目改名修改，是编写大量内容时最稳妥的起点。条目 ID 使用小写字母、数字、下划线和连字符，避免空格与中文文件名。
+:::
+
+:::warning
+游戏内编辑器保存条目时会写成单个纯文本页面。多页条目或使用 `pages[].image` 的条目应直接维护 JSON。
+:::
