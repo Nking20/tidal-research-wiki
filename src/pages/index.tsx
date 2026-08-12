@@ -8,28 +8,33 @@ import styles from './index.module.css';
 const entries = [
   {
     title: '模组总览',
-    description: '查看潮汐研究社系列模组目前已经整理的公开文档。',
+    description: '查看潮汐研究社系列模组目前已经整理的公开资料。',
     to: '/docs/intro',
   },
   {
+    title: '潮汐培育',
+    description: '采样、培育皿护理、七种样本、基因共生与生态复原。',
+    to: '/docs/tidal-nursery/overview',
+  },
+  {
     title: '潮汐委托',
-    description: '委托板、任务卡、调度令、担保凭证和玩家自定义委托。',
+    description: '委托板、任务来源、任务 JSON、配置和玩家委托规则。',
     to: '/docs/tidal-commission/overview',
   },
   {
-    title: '配置与数据包',
-    description: '查看潮汐委托的配置文件、来源权重和任务 JSON 写法。',
-    to: '/docs/tidal-commission/config',
+    title: '数据包与魔改',
+    description: '面向整合包作者与服务器管理者的通用改包规则和示例。',
+    to: '/docs/modpack/overview',
   },
   {
     title: '潮汐观测卡',
-    description: '观测等级、奖励池、代券、潮汐轮转和服务端配置同步说明。',
+    description: '观测等级、奖励池、轮转配置和服务器同步说明。',
     to: '/docs/tidal-observation-card/overview',
   },
   {
-    title: '整合包魔改',
-    description: '整理服务器和整合包作者使用的数据包、KubeJS 与样例。',
-    to: '/docs/modpack/overview',
+    title: '辑录与揭秘',
+    description: '辑录内容、来源、解锁配置和数据包章节写法。',
+    to: '/docs/reveal/overview',
   },
 ];
 
@@ -49,7 +54,7 @@ export default function Home(): ReactNode {
         <section className={styles.hero}>
           <div className="container">
             <Heading as="h1">潮汐研究社 Wiki</Heading>
-            <p>面向玩家、服务器管理员和整合包作者的 Minecraft 模组文档。</p>
+            <p>面向玩家、服务器管理者和整合包作者的 Minecraft 模组文档。</p>
           </div>
         </section>
         <section className={styles.entries}>

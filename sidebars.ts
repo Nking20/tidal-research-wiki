@@ -5,10 +5,28 @@ const sidebars: SidebarsConfig = {
     'intro',
     {
       type: 'category',
+      label: '潮汐培育',
+      collapsed: false,
+      items: [
+        'tidal-nursery/overview',
+        'tidal-nursery/sampling',
+        'tidal-nursery/culture-dish',
+        'tidal-nursery/specimens',
+        'tidal-nursery/tools',
+        'tidal-nursery/genetics',
+        'tidal-nursery/automation',
+        'tidal-nursery/progression',
+        'tidal-nursery/river-god',
+        'tidal-nursery/compatibility',
+      ],
+    },
+    {
+      type: 'category',
       label: '潮汐委托',
       collapsed: false,
       items: [
         'tidal-commission/overview',
+        'tidal-commission/status',
         'tidal-commission/gameplay',
         'tidal-commission/config',
         'tidal-commission/datapack',

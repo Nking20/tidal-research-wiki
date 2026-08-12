@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: '潮汐研究社 Wiki',
-  tagline: 'Minecraft 模组文档与整合包魔改资料',
+  tagline: 'Minecraft 模组资料与整合包魔改文档',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -48,6 +48,7 @@ const config: Config = {
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       defaultMode: 'light',
+      disableSwitch: false,
       respectPrefersColorScheme: true,
     },
     navbar: {
@@ -60,13 +61,18 @@ const config: Config = {
           label: '文档',
         },
         {
+          to: '/docs/tidal-nursery/overview',
+          label: '潮汐培育',
+          position: 'left',
+        },
+        {
           to: '/docs/tidal-commission/overview',
           label: '潮汐委托',
           position: 'left',
         },
         {
           to: '/docs/modpack/overview',
-          label: '整合包魔改',
+          label: '数据包与魔改',
           position: 'left',
         },
         {
@@ -88,14 +94,16 @@ const config: Config = {
           title: '文档',
           items: [
             {label: '总览', to: '/docs/intro'},
+            {label: '潮汐培育', to: '/docs/tidal-nursery/overview'},
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '辑录与揭秘', to: '/docs/reveal/overview'},
-            {label: '整合包魔改', to: '/docs/modpack/overview'},
+            {label: '数据包与魔改', to: '/docs/modpack/overview'},
           ],
         },
         {
           title: '模组',
           items: [
+            {label: '潮汐培育', to: '/docs/tidal-nursery/overview'},
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '潮汐观测卡', to: '/docs/tidal-observation-card/overview'},
             {label: '辑录与揭秘', to: '/docs/reveal/overview'},
