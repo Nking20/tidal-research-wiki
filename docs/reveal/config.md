@@ -5,39 +5,32 @@ title: 配置
 
 # 配置
 
-主配置文件位于：
+主配置文件：
 
 ```text
 config/reveal/reveal.json
 ```
 
-首次启动时会生成默认配置；旧版 `config/reveal.json` 会在需要时迁移到新位置。修改后执行：
-
-```mcfunction
-/reveal reload
-```
-
-该命令会同时重载主配置和 `config/reveal/entries/` 下的条目。
+修改后执行 `/reveal reload`。该命令会同时重载主配置和 `config/reveal/entries/` 下的辑录条目。
 
 ## 根字段
 
 | 字段 | 说明 |
 | --- | --- |
-| `config_version` | 配置格式版本；由模组维护，当前为 3。 |
-| `categories` | 类别定义，键名就是类别 ID。 |
-| `recipes` | 线索组合到类别的映射。 |
-| `creative_consumes` | 创造模式揭秘时是否消耗线索。 |
-| `give_index_book_on_first_join` | 玩家首次进入时是否给辑录册。 |
-| `give_reveal_codex_on_first_join` | 旧配置兼容字段；当前 1.1.1 代码不读取该值，也不会自动发放揭秘集。 |
-| `give_story_page_on_unlock` | 解锁条目时是否给辑录页。 |
-| `reveal_experience_reward` | 默认的单次揭秘经验奖励，默认 `5`。 |
-| `index_text_scale` | 目录文字缩放，默认 `1.18`，有效范围 `0.85`～`1.7`。 |
-| `story_text_scale` | 阅读页文字缩放，默认 `1.32`，有效范围 `0.85`～`1.7`。 |
-| `ui_style` | `book_clean` 或 `book_old`，默认 `book_clean`。 |
+| `config_version` | 配置格式版本；1.2.0 当前为 `7`，由模组自动维护。 |
+| `categories` | 篇章定义，键名为篇章 ID。 |
+| `recipes` | 解锁方式列表；字段名为兼容旧配置继续保留。 |
+| `creative_consumes` | 创造模式进行材料揭秘时是否消耗材料。 |
+| `give_index_book_on_first_join` | 玩家第一次进入世界时是否获得辑录册。 |
+| `give_story_page_on_unlock` | 解锁辑录时是否额外给予普通辑录页。 |
+| `reveal_experience_reward` | 默认解锁经验，默认 `5`。 |
+| `index_text_scale` | 目录文字缩放，默认 `1.18`，范围 `0.85`～`1.7`。 |
+| `story_text_scale` | 阅读页文字缩放，默认 `1.32`，范围 `0.85`～`1.7`。 |
+| `ui_style` | `book_clean` 或 `book_old`。 |
 
-## 类别示例
+旧字段 `give_reveal_codex_on_first_join` 已移除。旧配置加载后会自动迁移到当前格式。
 
-类别 ID 必须与条目文件夹名、配方目标 `target` 完全一致。下面新增一个“港口记录”类别：
+## 篇章
 
 ```json
 {
@@ -56,69 +49,138 @@ config/reveal/reveal.json
 
 | 字段 | 说明 |
 | --- | --- |
-| `display_name` | 目录中显示的标题。 |
-| `icon` | 物品 ID 图标，例如 `minecraft:compass`。 |
-| `unlock_strategy` | 解锁策略；默认内容使用 `pool`。 |
-| `hidden` | 是否在目录中隐藏类别。 |
-| `initial_unlocked` | 新玩家初始获得的该类别条目数。 |
-| `experience_reward` | 单次命中该类别时的经验；填 `-1` 时继承根字段 `reveal_experience_reward`。 |
+| `display_name` | 辑录册中显示的篇章名。 |
+| `icon` | 篇章图标的物品 ID。 |
+| `unlock_strategy` | 未指定单条辑录时的选取策略。 |
+| `hidden` | 尚未获得任何内容时是否隐藏该篇章。 |
+| `initial_unlocked` | 玩家首次同步时自动获得的辑录数量。 |
+| `experience_reward` | 篇章经验；`-1` 表示继承根配置。 |
 
-### 解锁策略
+### 篇章策略
 
 | 值 | 行为 |
 | --- | --- |
-| `ordered` | 按 `order`、条目 ID 的顺序逐条解锁。 |
-| `pool` | 只在当前最小 `order` 的一组条目中按 `weight` 抽取；这一组完成后才进入下一组。 |
-| `random` | 在该类别全部未解锁条目中按 `weight` 抽取，不受 `order` 分组限制。 |
+| `ordered` | 按 `order` 和辑录 ID 依次解锁。 |
+| `pool` | 在当前最小 `order` 的一组辑录中按 `weight` 抽取。 |
+| `random` | 在该篇章全部未解锁辑录中按 `weight` 抽取。 |
 
-## 线索组合示例
+## 解锁方式通用字段
 
-每条 `recipes` 使用 `target` 指向一个类别。`inputs` 必须是 1～2 个对象，每个对象只能包含 `item` 或 `tag`。JSON 中的标签直接写资源 ID，不加 `#`；`#标签` 只用于游戏内编辑器的输入框。双物品组合不区分槽位顺序。
+虽然配置数组仍叫 `recipes`，其中每一项现在表示一种“解锁方式”。
+
+| 字段 | 说明 |
+| --- | --- |
+| `type` | `materials`、`kill_entity`、`enter_biome` 或 `advancement`。省略时按 `materials` 处理。 |
+| `target` | 目标篇章 ID，必填。 |
+| `target_entry` | 可选；填写后只解锁该篇章中的指定辑录。 |
+| `hint_visibility` | 解锁提示显示位置：`auto`、`category`、`entry`、`hidden`。 |
+| `inputs` | 仅材料解锁使用，包含 1～2 个物品或标签。 |
+| `consume_inputs` | 仅材料解锁使用；成功后是否消耗材料，默认 `true`。 |
+| `trigger` | 击杀、群系和进度解锁使用的目标资源 ID。 |
+
+### 目标范围
+
+- 只写 `target`：从整个篇章中按 `unlock_strategy` 选择一条未解锁辑录。
+- 同时写 `target_entry`：直接解锁指定辑录，不进行抽取。
+
+### 提示位置
+
+| 值 | 行为 |
+| --- | --- |
+| `auto` | 整篇目标显示在篇章；单条目标显示在对应辑录。 |
+| `category` | 显示在篇章提示中。 |
+| `entry` | 显示在目标辑录提示中；通常与 `target_entry` 一起使用。 |
+| `hidden` | 不在辑录册中显示该解锁条件。 |
+
+## 材料解锁
 
 ```json
 {
-  "recipes": [
-    {
-      "inputs": [
-        {
-          "item": "minecraft:paper"
-        }
-      ],
-      "target": "harbor_notes"
-    },
-    {
-      "inputs": [
-        {
-          "tag": "minecraft:planks"
-        },
-        {
-          "item": "minecraft:compass"
-        }
-      ],
-      "target": "harbor_notes"
-    }
-  ]
+  "type": "materials",
+  "inputs": [
+    { "tag": "minecraft:planks" },
+    { "item": "minecraft:compass" }
+  ],
+  "target": "harbor_notes",
+  "consume_inputs": true,
+  "hint_visibility": "auto"
 }
 ```
 
-第一条只需要纸，可放在任一线索槽；第二条需要任意原版木板和指南针，摆放顺序不限。
+`inputs` 必须包含 1～2 项，每项只能写 `item` 或 `tag`。JSON 中标签直接写 ID，不加 `#`。双材料不区分 A、B 顺序。
 
-## 经验奖励继承
+不消耗材料、直接解锁单条辑录的写法：
 
-经验奖励按以下优先级确定：
+```json
+{
+  "type": "materials",
+  "inputs": [
+    { "item": "minecraft:compass" }
+  ],
+  "target": "misc",
+  "target_entry": "compass",
+  "consume_inputs": false,
+  "hint_visibility": "auto"
+}
+```
 
-1. 条目 JSON 的 `experience_reward`；
-2. 类别的 `experience_reward`；
+## 击杀生物
+
+```json
+{
+  "type": "kill_entity",
+  "trigger": "minecraft:creeper",
+  "target": "harbor_notes",
+  "target_entry": "creeper_report",
+  "hint_visibility": "entry"
+}
+```
+
+只有玩家造成的击杀会触发。
+
+## 进入群系
+
+```json
+{
+  "type": "enter_biome",
+  "trigger": "minecraft:mangrove_swamp",
+  "target": "harbor_notes",
+  "target_entry": "mangrove_route",
+  "hint_visibility": "entry"
+}
+```
+
+玩家进入目标群系后自动检测。同一群系中持续停留不会反复触发。
+
+## 完成进度
+
+```json
+{
+  "type": "advancement",
+  "trigger": "minecraft:adventure/root",
+  "target": "harbor_notes",
+  "hint_visibility": "category"
+}
+```
+
+`trigger` 可以使用原版或数据包提供的进度 ID。
+
+## 经验奖励
+
+经验按以下顺序决定：
+
+1. 辑录 JSON 的 `experience_reward`；
+2. 篇章的 `experience_reward`；
 3. 根字段 `reveal_experience_reward`。
 
-条目和类别默认值为 `-1`，表示继续继承；`0` 表示明确不奖励经验；正整数表示本层使用的经验值。
+`-1` 表示继续继承，`0` 表示明确不奖励经验，正整数表示实际经验值。
 
-## 推荐编辑流程
+## 修改与检查
 
-1. 先用 `/reveal export-defaults` 导出一套可编辑的默认条目（已有文件不会被该命令覆盖）。
-2. 在 `reveal.json` 中添加类别与配方。
-3. 在 `config/reveal/entries/<类别 ID>/` 中添加条目 JSON。
-4. 执行 `/reveal reload`。
-5. 执行 `/reveal doctor`，确认没有缺失物品、空标签或未配置类别。
+```mcfunction
+/reveal reload
+/reveal doctor
+/reveal editor
+```
 
-不想手写 JSON 时，也可以在游戏内执行 `/reveal editor`，在类别、条目和配方三个页签中创建并保存内容。
+可视化编辑器可以选择物品、生物、群系和进度，设置目标篇章或单条辑录、材料消耗和提示位置。保存后配置立即重载。

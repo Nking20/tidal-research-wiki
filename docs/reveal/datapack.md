@@ -5,7 +5,7 @@ title: 条目数据与数据包
 
 # 条目数据与数据包
 
-Reveal 的条目是 JSON。当前默认的 120 条中文内容内置在模组 JAR 的 `data/reveal/re/` 下，并在首次创建 `config/reveal/` 时导出为可编辑文件：
+Reveal 的条目是 JSON。当前默认的 123 条中文内容内置在模组 JAR 的 `data/reveal/re/` 下，并在首次创建 `config/reveal/` 时导出为可编辑文件：
 
 ```text
 config/reveal/entries/<类别 ID>/<条目 ID>.json
@@ -78,7 +78,7 @@ config/reveal/entries/harbor_notes/first_shipment.json
 data/harbor_pack/re/harbor_notes/first_shipment.json
 ```
 
-类别 ID 仍必须在 `config/reveal/reveal.json` 的 `categories` 中存在。数据包适合把内容与整合包资源一起发布；`config/reveal/entries/` 则是实际运行和本地快速迭代的位置。
+类别 ID 仍必须在 `config/reveal/reveal.json` 的 `categories` 中存在。辑录的解锁条件不写在条目 JSON 中，而是在 `reveal.json` 的 `recipes` 数组中配置；它可以指向整个篇章，也可以通过 `target_entry` 指向本条辑录。数据包适合把内容与整合包资源一起发布；`config/reveal/entries/` 则是实际运行和本地快速迭代的位置。
 
 需要特别注意：
 
@@ -96,7 +96,7 @@ data/harbor_pack/re/harbor_notes/first_shipment.json
 # 重新读取配置与条目
 /reveal reload
 
-# 检查空类别、无效物品、标签和不匹配的条目类别
+# 检查空篇章、无效物品、标签、触发目标和不匹配的辑录
 /reveal doctor
 ```
 
