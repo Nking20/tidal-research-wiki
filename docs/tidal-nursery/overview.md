@@ -23,6 +23,7 @@ title: 潮汐培育总览
 
 - [采样与开局](./sampling.md)
 - [培育皿与护理](./culture-dish.md)
+- [培养环境与配件](./environments-accessories.md)
 - [七种样本](./specimens.md)
 - [工具与消耗品](./tools.md)
 - [基因与共生环](./genetics.md)

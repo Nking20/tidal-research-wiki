@@ -11,6 +11,7 @@ const sidebars: SidebarsConfig = {
         'tidal-nursery/overview',
         'tidal-nursery/sampling',
         'tidal-nursery/culture-dish',
+        'tidal-nursery/environments-accessories',
         'tidal-nursery/specimens',
         'tidal-nursery/tools',
         'tidal-nursery/genetics',
