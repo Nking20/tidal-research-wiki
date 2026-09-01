@@ -44,6 +44,7 @@ const sidebars: SidebarsConfig = {
         'tidal-observation-card/overview',
         'tidal-observation-card/gameplay',
         'tidal-observation-card/config',
+        'tidal-observation-card/currency-api',
         'tidal-observation-card/datapack',
         'tidal-observation-card/examples',
         'tidal-observation-card/notes',
