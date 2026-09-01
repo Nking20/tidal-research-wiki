@@ -71,7 +71,7 @@ data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
 | `stars` | 界面星级，通常与档位一致。 |
 | `brief_description` / `full_description` | 接取前简介与详情说明。 |
 | `weight` | 同来源、同档位任务的基础抽取权重。 |
-| `duration` | 作者描述字段；实际限时仍由主配置的时间规则决定。 |
+| `duration` | 完成期限模式。大于 `0` 时使用主配置中对应档位的完成时限；设为 `0` 时，接取后无完成期限。 |
 | `requirements` | 一个目标对象或目标数组。 |
 | `objective_logic` | 多目标完成规则，省略时为 `all`。 |
 | `accept_cost` | 接取成本，`primary` 必填，`extra` 可选。 |
@@ -193,9 +193,37 @@ data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
 
 `repeat.mode` 支持 `unlimited`、`once`、`cooldown`、`daily`、`weekly`。使用 `cooldown` 时通过 `cooldown_seconds` 设置间隔；`max_completions` 大于 0 时还会限制总完成次数。
 
+## 接取后无期限任务
+
+```json
+{
+  "id": "my_pack:unlimited_archive_supplies",
+  "tier": 1,
+  "source": "official",
+  "stars": 1,
+  "brief_description": "长期补齐档案纸张。",
+  "full_description": "这份委托仍需按时接取，但接取后没有完成期限。",
+  "weight": 5,
+  "duration": 0,
+  "requirements": {
+    "type": "item",
+    "target": "minecraft:paper",
+    "count": 24
+  },
+  "accept_cost": {
+    "primary": { "item": "minecraft:gold_nugget", "count": 4 }
+  },
+  "rewards": {
+    "primary": { "item": "minecraft:emerald", "count": [8, 12] }
+  }
+}
+```
+
+`duration: 0` 只取消接受后的完成期限，不会取消委托出现后的等待接取时限。
+
 ## 扩展目标与奖励
 
-1.5.0 提供目标类型与奖励类型注册接口。兼容模组可以加入自己的类型；没有安装对应兼容模组时，引用未知类型的任务会在校验中报告错误，而不会悄悄作为普通物品任务运行。
+潮汐委托提供目标类型与奖励类型注册接口。兼容模组可以加入自己的类型；没有安装对应兼容模组时，引用未知类型的任务会在校验中报告错误，而不会悄悄作为普通物品任务运行。
 
 ## 发布前检查
 

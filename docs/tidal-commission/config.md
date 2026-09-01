@@ -14,7 +14,7 @@ config/tidalcommission/
 
 ## commission_rules.json
 
-`commission_rules.json` 是主配置文件，控制时限、成本、访问入口、来源、指定来源栏位、辅助物品和首次进入世界物品。
+`commission_rules.json` 是主配置文件，控制时限、成本、自动补充、访问入口、来源、指定来源栏位、辅助物品和首次进入世界物品。
 
 常用字段：
 
@@ -24,15 +24,71 @@ config/tidalcommission/
 | `timing.abandon_penalty_days` | 放弃委托后的罚时。 |
 | `timing.expired_penalty_days` | 委托超时后的罚时。 |
 | `timing.completion_cooldown_days` | 完成委托后的冷却。 |
+| `offer_rotation.enabled` | 是否启用定期自动补充委托。 |
+| `offer_rotation.auto_reveal_interval_days` | 自动补充间隔，单位为游戏日。 |
+| `offer_rotation.auto_reveal_count` | 每次最多补充的委托数量，范围 1～5。 |
+| `offer_rotation.accept_deadline_days` | 委托出现后等待玩家接取的期限，单位为游戏日，不能无限。 |
+| `offer_rotation.expired_offer_cooldown_days` | 未接取委托过期后的空栏冷却，单位为游戏日。 |
 | `open_costs` | 翻开不同档位卡牌的成本。 |
 | `directed_slots` | 指定来源栏位。 |
 | `items.dispatch_token.use_cooldown_seconds` | 调度令使用冷却。 |
 | `items.starter_items.give_commission_board_on_first_join` | 首次进入世界是否自动给予委托板。 |
-| `access.mode` | 委托界面的访问模式；1.5.0 默认 `always_available`。 |
+| `access.mode` | 委托界面的访问模式；默认 `always_available`。 |
 | `access.inventory_button` | 是否显示物品栏底部页签。 |
 | `access.hotkey` | 是否允许快捷键打开。 |
 | `access.player_command` | 是否允许玩家使用 `/tc open`。 |
 | `sources` | 委托来源列表。 |
+
+## 游戏内配置中心
+
+在客户端输入：
+
+```text
+/tc config
+```
+
+配置中心包含界面、刷新、时限、费用、入口和玩家委托六个分页。本地界面设置会立即保存；服务器设置只有权限等级 2 及以上的管理员可以保存，普通玩家打开时为只读。
+
+复杂任务内容和来源分类仍由“委托与来源分类管理器”维护。
+
+## 自动补充配置
+
+默认示例：
+
+```json
+"offer_rotation": {
+  "enabled": true,
+  "auto_reveal_interval_days": 0.5,
+  "auto_reveal_count": 1,
+  "accept_deadline_days": 0.5,
+  "expired_offer_cooldown_days": 0.1
+}
+```
+
+说明：
+
+- 自动补充会直接把任务放入普通空闲栏位，不会占用指定来源栏位。
+- 自动补充免去的是栏位翻开费用，不会免除任务 JSON 中的 `accept_cost`。
+- `accept_deadline_days` 必须大于 `0`；无期限只适用于接受后的完成阶段。
+- 自动补充计划和等待接取期限会随玩家委托板状态保存。
+
+## 客户端界面配置
+
+本地界面设置保存在：
+
+```text
+config/tidalcommission/client_ui.json
+```
+
+可通过 `/tc config` 调整：
+
+- 是否显示委托追踪栏。
+- HUD 位于左上、右上、左下或右下。
+- HUD 缩放、背景透明度、水平边距和垂直边距。
+- 同时追踪 1～3 份委托，以及展开显示的目标行数。
+- 是否显示委托达成提示和新委托送达提示。
+
+这些设置只影响当前客户端，不会改变服务器任务状态。
 
 ## 委托访问方式
 
@@ -52,7 +108,7 @@ config/tidalcommission/
 | 值 | 说明 |
 | --- | --- |
 | `always_available` | 默认模式，不要求携带委托板。 |
-| `board_required` | 必须在背包或 Curios 栏位中持有委托板。 |
+| `board_required` | 必须在背包中持有委托板。 |
 | `unlock_once` | 持有过委托板后永久解锁便携入口。 |
 | `external_only` | 关闭背包页签和快捷键等便携入口；委托板物品、允许的命令和外部接口仍可打开。 |
 
@@ -94,7 +150,7 @@ config/tidalcommission/
 
 如果想让默认来源不再出现，可以把对应来源的 `weight` 设为 `0`，或将 `enabled` 设为 `false`。
 
-1.5.0 也可以在游戏内的来源分类编辑器中新增、修改或删除来源。仍被任务 JSON 引用的来源不能直接删除，需先修改或删除对应任务，避免任务失去分类。
+也可以在游戏内的来源分类编辑器中新增、修改或删除来源。仍被任务 JSON 引用的来源不能直接删除，需先修改或删除对应任务，避免任务失去分类。
 
 ## 指定来源栏位
 

@@ -4,7 +4,7 @@ title: 潮汐委托样例
 
 # 潮汐委托样例
 
-1.5.0 的内置任务已经包含下列可直接测试的示例。首次生成配置后，可在 `config/tidalcommission/tasks/` 中找到对应 JSON。
+内置任务已经包含下列可直接测试的示例。首次生成配置后，可在 `config/tidalcommission/tasks/` 中找到对应 JSON。
 
 | 示例 | 文件 ID | 展示内容 |
 | --- | --- | --- |
@@ -16,6 +16,25 @@ title: 潮汐委托样例
 | 沼泽调查 | `official_t2_swamp_survey_09` | 到达群系目标。 |
 | 海洋路线 | `folk_t1_ocean_tag_route_demo_13` | 群系标签目标。 |
 | 原木补给 | `folk_t1_log_tag_demo_13` | 物品标签目标。 |
+| 长期档案补给 | `official_t1_unlimited_archive_supplies_14` | 出现后限时接取，接取后无完成期限。 |
+
+## 自动补充测试
+
+在 `commission_rules.json` 中启用：
+
+```json
+"offer_rotation": {
+  "enabled": true,
+  "auto_reveal_interval_days": 0.5,
+  "auto_reveal_count": 1,
+  "accept_deadline_days": 0.5,
+  "expired_offer_cooldown_days": 0.1
+}
+```
+
+也可以通过 `/tc config` 的“刷新”分页修改。等待半个游戏日后，普通空闲栏位会自动出现一份可查看的委托，并显示“新委托已送达”。
+
+自动出现的任务不收取翻开栏位的费用；点击接受时仍会检查该任务自己的 `accept_cost`。
 
 ## 新增来源与任务
 
