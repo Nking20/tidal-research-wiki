@@ -71,11 +71,6 @@ const config: Config = {
           position: 'left',
         },
         {
-          to: '/docs/modpack/overview',
-          label: '数据包与魔改',
-          position: 'left',
-        },
-        {
           to: '/docs/reveal/overview',
           label: '辑录与揭秘',
           position: 'left',
@@ -97,7 +92,6 @@ const config: Config = {
             {label: '潮汐培育', to: '/docs/tidal-nursery/overview'},
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '辑录与揭秘', to: '/docs/reveal/overview'},
-            {label: '数据包与魔改', to: '/docs/modpack/overview'},
           ],
         },
         {

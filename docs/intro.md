@@ -28,5 +28,4 @@ title: Wiki 总览
 - [潮汐委托总览](./tidal-commission/overview.md)
 - [潮汐委托配置](./tidal-commission/config.md)
 - [潮汐委托任务 JSON](./tidal-commission/datapack.md)
-- [数据包与魔改规则](./modpack/overview.md)
 - [辑录与揭秘总览](./reveal/overview.md)

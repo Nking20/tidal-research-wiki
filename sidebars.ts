@@ -68,12 +68,6 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: ['tidal-market/overview'],
     },
-    {
-      type: 'category',
-      label: '数据包与魔改',
-      collapsed: false,
-      items: ['modpack/overview', 'modpack/examples'],
-    },
     'changelog',
   ],
 };

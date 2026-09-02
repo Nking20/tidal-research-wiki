@@ -22,11 +22,6 @@ const entries = [
     to: '/docs/tidal-commission/overview',
   },
   {
-    title: '数据包与魔改',
-    description: '面向整合包作者与服务器管理者的通用改包规则和示例。',
-    to: '/docs/modpack/overview',
-  },
-  {
     title: '潮汐观测卡',
     description: '观测等级、奖励池、轮转配置和服务器同步说明。',
     to: '/docs/tidal-observation-card/overview',
