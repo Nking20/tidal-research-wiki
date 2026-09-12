@@ -12,13 +12,15 @@ title: 任务 JSON 与数据包
 config/tidalcommission/tasks/<来源>/<文件>.json
 ```
 
-数据包或 KubeJS 可提供初始任务：
+数据包可以提供初始任务：
 
 ```text
-data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
+data/tidalcommission/tidal_commission_tasks/<来源>/<文件>.json
 ```
 
-内置和数据包任务只会在配置任务目录为空时写入。此后应直接维护 `config/tidalcommission/tasks/`，再执行 `/tc reload`。旧目录 `data/<命名空间>/tasks/` 不会被读取。
+内置和数据包任务只会在配置任务目录为空时写入，并且当前初始化读取的是命名空间 `tidalcommission`。此后应直接维护 `config/tidalcommission/tasks/`，再执行 `/tc reload`。旧目录 `data/<命名空间>/tasks/` 不会被读取；把任务放在自己模组的命名空间下，也不会被这套初始化流程导入。
+
+如果要随整合包发布自定义任务，最稳妥的方式是直接分发 `config/tidalcommission/tasks/`。数据包适合首次初始化或开发测试，不适合作为持续覆盖配置的机制。
 
 ## 基础结构
 
@@ -71,7 +73,7 @@ data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
 | `stars` | 界面星级，通常与档位一致。 |
 | `brief_description` / `full_description` | 接取前简介与详情说明。 |
 | `weight` | 同来源、同档位任务的基础抽取权重。 |
-| `duration` | 完成期限模式。大于 `0` 时使用主配置中对应档位的完成时限；设为 `0` 时，接取后无完成期限。 |
+| `duration` | 完成期限开关。大于 `0` 时使用主配置中对应档位的完成时限；设为 `0` 时，接取后无完成期限。这个数值不会单独把任务限时设为多少天。 |
 | `requirements` | 一个目标对象或目标数组。 |
 | `objective_logic` | 多目标完成规则，省略时为 `all`。 |
 | `accept_cost` | 接取成本，`primary` 必填，`extra` 可选。 |
@@ -214,50 +216,54 @@ my_pack:harbor_story_01, my_pack:harbor_story_side
 
 这表示两项前置都完成后，当前委托才有资格出现。制作只体验一次的剧情时，将各章节的重复模式设为仅一次（`once`），然后保存。
 
-### 三段故事链：修复港口灯塔
+### 线性、分支和汇合关系
 
-创建三个独立委托，按下表设置 ID 与前置关系，即可实现「募集材料 → 修复灯具 → 最后补给」：
+前置字段只表达“完成哪些任务后才有资格抽到当前任务”。例如线性链是：
 
-| 章节 | 委托 ID | `prerequisites` | 交付目标 |
-| --- | --- | --- | --- |
-| 第一章：募集材料 | `my_pack:harbor_story_01` | `[]` | 16 个橡木原木 |
-| 第二章：修复灯具 | `my_pack:harbor_story_02` | `["my_pack:harbor_story_01"]` | 4 个灯笼 |
-| 第三章：最后补给 | `my_pack:harbor_story_03` | `["my_pack:harbor_story_02"]` | 8 个面包 |
+```text
+tutorial:a  ->  tutorial:b  ->  tutorial:c
+```
 
-下面是第二章的完整 JSON，可保存为 `config/tidalcommission/tasks/official/harbor_story_02.json`：
+任务 B 写入：
 
 ```json
 {
-  "id": "my_pack:harbor_story_02",
+  "id": "tutorial:b",
   "tier": 1,
   "source": "official",
   "stars": 1,
-  "brief_description": "第二章：修复灯具",
-  "full_description": "你送来的木材已经加固了灯塔。守塔人还需要四盏灯笼，让归航的船只看清港口。",
+  "brief_description": "任务 B",
+  "full_description": "完成任务 A 后才允许抽到这份任务。",
   "weight": 10,
-  "duration": 1.0,
+  "duration": 0,
   "requirements": {
     "type": "item",
-    "target": "minecraft:lantern",
-    "count": 4
+    "target": "minecraft:iron_ingot",
+    "count": 1
   },
   "accept_cost": {
-    "primary": { "item": "minecraft:gold_ingot", "count": 1 }
+    "primary": { "item": "minecraft:gold_nugget", "count": 1 }
   },
   "rewards": {
-    "primary": { "item": "minecraft:emerald", "count": [4, 6] },
+    "primary": { "item": "minecraft:emerald", "count": 1 },
     "extras": []
   },
   "repeat": { "mode": "once" },
-  "prerequisites": ["my_pack:harbor_story_01"]
+  "prerequisites": ["tutorial:a"]
 }
 ```
 
-复制该模板创建第一章与第三章的独立 JSON 文件，按表修改 `id`、`prerequisites`、目标物品和数量，并分别填写章节简介与正文。第一章的目标为 `minecraft:oak_log`，第三章为 `minecraft:bread`；三个章节都保留 `"repeat": { "mode": "once" }`。示例要求 `official` 来源存在且启用。
+分支可以让两个任务都没有前置，然后分别指向同一个后续任务：
 
-保存全部文件后执行 `/tc reload`，再用 `/tc doctor` 检查任务配置。使用没有完成过这些 ID 的测试玩家按顺序完成各章，确认后续章节只在前置完成后才有资格出现；不要把“没有立即抽到”视为解锁失败。
+```text
+       tutorial:a  ─┐
+                    ├─> tutorial:c
+       tutorial:b  ─┘
+```
 
-不要填写不存在的 ID、把自己设为前置，或配置 A 依赖 B、B 又依赖 A 的循环关系，否则正常游玩时无法开始这条委托链。发布后应保持章节 ID 稳定，因为前置关系和玩家完成记录都通过 ID 对应。
+任务 C 写入 `"prerequisites": ["tutorial:a", "tutorial:b"]`，表示 A 和 B 都完成后才获得资格。`objective_logic` 不会改变这个“全部前置”的规则。
+
+不要填写不存在的 ID、把自己设为前置，或配置循环关系。发布后应保持任务 ID 稳定，因为前置关系和玩家完成记录都通过 ID 对应。可直接使用[按需求配置任务](./examples.md)中的测试步骤验证关系。
 
 ## 接取后无期限任务
 

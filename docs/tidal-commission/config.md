@@ -20,14 +20,14 @@ config/tidalcommission/
 
 | 字段 | 说明 |
 | --- | --- |
-| `timing.task_duration_days` | 接取委托后的限时。 |
+| `timing.task_duration_days` | 按 Tier 设置接取后的限时；任务 JSON 的 `duration > 0` 才使用这里对应档位的值。 |
 | `timing.abandon_penalty_days` | 放弃委托后的罚时。 |
 | `timing.expired_penalty_days` | 委托超时后的罚时。 |
 | `timing.completion_cooldown_days` | 完成委托后的冷却。 |
 | `offer_rotation.enabled` | 是否启用定期自动补充委托。 |
 | `offer_rotation.auto_reveal_interval_days` | 自动补充间隔，单位为游戏日。 |
 | `offer_rotation.auto_reveal_count` | 每次最多补充的委托数量，范围 1～5。 |
-| `offer_rotation.accept_deadline_days` | 委托出现后等待玩家接取的期限，单位为游戏日，不能无限。 |
+| `offer_rotation.accept_deadline_days` | 委托出现后等待玩家接取的期限，按游戏刻计算（24000 游戏刻为一个游戏日），不能无限。 |
 | `offer_rotation.expired_offer_cooldown_days` | 未接取委托过期后的空栏冷却，单位为游戏日。 |
 | `open_costs` | 翻开不同档位卡牌的成本。 |
 | `directed_slots` | 指定来源栏位。 |
@@ -38,6 +38,16 @@ config/tidalcommission/
 | `access.hotkey` | 是否允许快捷键打开。 |
 | `access.player_command` | 是否允许玩家使用 `/tc open`。 |
 | `sources` | 委托来源列表。 |
+
+默认的档位时限、惩罚和完成冷却如下；修改 `commission_rules.json` 后以文件中的数值为准：
+
+| Tier | 接取后完成时限 | 放弃惩罚 | 超时惩罚 | 完成冷却 |
+| --- | ---: | ---: | ---: | ---: |
+| 1 | 0.8 游戏日 | 0.5 现实日 | 0.4 现实日 | 0.2 现实日 |
+| 2 | 1.6 游戏日 | 0.5 现实日 | 0.4 现实日 | 0.2 现实日 |
+| 3 | 2.4 游戏日 | 0.5 现实日 | 0.4 现实日 | 0.2 现实日 |
+
+默认翻牌费用为 Tier 1/2/3 各 1/2/3 个金锭。这里的“游戏日”按 24000 游戏刻运行；惩罚和完成冷却由现实时间计时。
 
 ## 游戏内配置中心
 
@@ -53,7 +63,7 @@ config/tidalcommission/
 
 ## 自动补充配置
 
-默认示例：
+默认示例（自动补充、接受期限和完成期限按 Minecraft 游戏刻计算；每日/每周重复限制使用现实时间日历）：
 
 ```json
 "offer_rotation": {
@@ -70,6 +80,7 @@ config/tidalcommission/
 - 自动补充会直接把任务放入普通空闲栏位，不会占用指定来源栏位。
 - 自动补充免去的是栏位翻开费用，不会免除任务 JSON 中的 `accept_cost`。
 - `accept_deadline_days` 必须大于 `0`；无期限只适用于接受后的完成阶段。
+- 自动补充间隔、接受期限和任务完成期限使用游戏刻；栏位放弃惩罚、超时惩罚、完成冷却以及 `repeat.daily`/`weekly` 使用现实时间。
 - 自动补充计划和等待接取期限会随玩家委托板状态保存。
 
 ## 客户端界面配置
