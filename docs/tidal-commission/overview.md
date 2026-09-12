@@ -33,6 +33,7 @@ title: 潮汐委托总览
 
 ## 快速入口
 
+- [整合包作者上手指南](./author-guide.md)
 - [基础玩法](./gameplay.md)
 - [1.6.0 当前状态](./status.md)
 - [服务端配置](./config.md)

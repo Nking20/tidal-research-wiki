@@ -181,6 +181,8 @@ data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
 
 ## 前置与重复规则
 
+如果你是第一次制作整合包任务，建议先阅读[整合包作者上手指南](./author-guide.md)，其中包含目录、来源启用、重载诊断和连续故事的完整流程。
+
 ```json
 "repeat": {
   "mode": "daily",
@@ -192,6 +194,70 @@ data/<命名空间>/tidal_commission_tasks/<来源>/<文件>.json
 ```
 
 `repeat.mode` 支持 `unlimited`、`once`、`cooldown`、`daily`、`weekly`。使用 `cooldown` 时通过 `cooldown_seconds` 设置间隔；`max_completions` 大于 0 时还会限制总完成次数。
+
+### 前置委托如何解锁
+
+`prerequisites` 填写的是前置委托的完整 `id`，不是文件名或显示标题。系统按每位玩家自己的完成记录判断：
+
+- 留空或省略此字段，表示没有前置委托限制。
+- 填写多个 ID 时，玩家必须全部完成；只接取、放弃或超时不算完成。
+- 完成前置后，后续委托才有资格被抽取，仍受来源、档位、阶段条件、重复规则及抽取权重等限制。
+- 后续委托不会立即弹出或自动接取，因此故事链各章节之间可能需要等待新的抽取机会。
+
+### 在游戏内编辑器中设置
+
+打开委托编辑器，在条件页面找到「前置委托 ID」，填写上一章的完整 ID。多个 ID 使用英文逗号分隔，例如：
+
+```text
+my_pack:harbor_story_01, my_pack:harbor_story_side
+```
+
+这表示两项前置都完成后，当前委托才有资格出现。制作只体验一次的剧情时，将各章节的重复模式设为仅一次（`once`），然后保存。
+
+### 三段故事链：修复港口灯塔
+
+创建三个独立委托，按下表设置 ID 与前置关系，即可实现「募集材料 → 修复灯具 → 最后补给」：
+
+| 章节 | 委托 ID | `prerequisites` | 交付目标 |
+| --- | --- | --- | --- |
+| 第一章：募集材料 | `my_pack:harbor_story_01` | `[]` | 16 个橡木原木 |
+| 第二章：修复灯具 | `my_pack:harbor_story_02` | `["my_pack:harbor_story_01"]` | 4 个灯笼 |
+| 第三章：最后补给 | `my_pack:harbor_story_03` | `["my_pack:harbor_story_02"]` | 8 个面包 |
+
+下面是第二章的完整 JSON，可保存为 `config/tidalcommission/tasks/official/harbor_story_02.json`：
+
+```json
+{
+  "id": "my_pack:harbor_story_02",
+  "tier": 1,
+  "source": "official",
+  "stars": 1,
+  "brief_description": "第二章：修复灯具",
+  "full_description": "你送来的木材已经加固了灯塔。守塔人还需要四盏灯笼，让归航的船只看清港口。",
+  "weight": 10,
+  "duration": 1.0,
+  "requirements": {
+    "type": "item",
+    "target": "minecraft:lantern",
+    "count": 4
+  },
+  "accept_cost": {
+    "primary": { "item": "minecraft:gold_ingot", "count": 1 }
+  },
+  "rewards": {
+    "primary": { "item": "minecraft:emerald", "count": [4, 6] },
+    "extras": []
+  },
+  "repeat": { "mode": "once" },
+  "prerequisites": ["my_pack:harbor_story_01"]
+}
+```
+
+复制该模板创建第一章与第三章的独立 JSON 文件，按表修改 `id`、`prerequisites`、目标物品和数量，并分别填写章节简介与正文。第一章的目标为 `minecraft:oak_log`，第三章为 `minecraft:bread`；三个章节都保留 `"repeat": { "mode": "once" }`。示例要求 `official` 来源存在且启用。
+
+保存全部文件后执行 `/tc reload`，再用 `/tc doctor` 检查任务配置。使用没有完成过这些 ID 的测试玩家按顺序完成各章，确认后续章节只在前置完成后才有资格出现；不要把“没有立即抽到”视为解锁失败。
+
+不要填写不存在的 ID、把自己设为前置，或配置 A 依赖 B、B 又依赖 A 的循环关系，否则正常游玩时无法开始这条委托链。发布后应保持章节 ID 稳定，因为前置关系和玩家完成记录都通过 ID 对应。
 
 ## 接取后无期限任务
 
