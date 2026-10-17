@@ -5,7 +5,7 @@ title: 条目数据与数据包
 
 # 条目数据与数据包
 
-Reveal 的条目是 JSON。当前默认的 123 条中文内容内置在模组 JAR 的 `data/reveal/re/` 下，并在首次创建 `config/reveal/` 时导出为可编辑文件：
+Reveal 的条目是 JSON。1.3.0 的 NeoForge 1.21.1 版内置 123 条中文内容，Forge 1.20.1 版内置 121 条；文件位于模组 JAR 的 `data/reveal/re/` 下，并在首次创建 `config/reveal/` 时导出为可编辑文件：
 
 ```text
 config/reveal/entries/<类别 ID>/<条目 ID>.json
@@ -80,6 +80,12 @@ data/harbor_pack/re/harbor_notes/first_shipment.json
 
 类别 ID 仍必须在 `config/reveal/reveal.json` 的 `categories` 中存在。辑录的解锁条件不写在条目 JSON 中，而是在 `reveal.json` 的 `recipes` 数组中配置；它可以指向整个篇章，也可以通过 `target_entry` 指向本条辑录。数据包适合把内容与整合包资源一起发布；`config/reveal/entries/` 则是实际运行和本地快速迭代的位置。
 
+`inventory_items` 背包持物条件同样写在 `recipes` 中，不需要修改条目结构。只写 `target` 时会一次解锁该篇章全部未拥有且 `weight > 0` 的条目；只想解锁本条时必须填写 `target_entry`。完整示例见[配置说明](./config#背包持物自动解锁)。
+
+### 两个游戏版本的内容兼容
+
+两个版本的 Reveal 条目字段和主配置结构一致，但数据包本身需要使用对应 Minecraft 版本的格式，物品、群系和进度 ID 也必须存在于该版本。Forge 1.20.1 默认内容不包含 Creator 唱片和试炼密室；从 1.21.1 复制自定义内容时，应先替换其中的 1.21 专属资源引用。
+
 需要特别注意：
 
 - 首次创建 `config/reveal/` 时，当前启用的数据包条目会自动导出。
@@ -105,5 +111,5 @@ data/harbor_pack/re/harbor_notes/first_shipment.json
 :::
 
 :::warning
-游戏内编辑器保存条目时会写成单个纯文本页面。多页条目或使用 `pages[].image` 的条目应直接维护 JSON。
+游戏内编辑器保存条目时会写成单个纯文本页面，最多 40 行正文。多页条目或使用 `pages[].image` 的条目应直接维护 JSON。
 :::
