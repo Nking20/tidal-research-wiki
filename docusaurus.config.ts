@@ -66,6 +66,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/docs/infernal-nursery/overview',
+          label: '炼狱培育',
+          position: 'left',
+        },
+        {
           to: '/docs/tidal-commission/overview',
           label: '潮汐委托',
           position: 'left',
@@ -90,6 +95,7 @@ const config: Config = {
           items: [
             {label: '总览', to: '/docs/intro'},
             {label: '潮汐培育', to: '/docs/tidal-nursery/overview'},
+            {label: '炼狱培育', to: '/docs/infernal-nursery/overview'},
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '辑录与揭秘', to: '/docs/reveal/overview'},
           ],
@@ -98,6 +104,7 @@ const config: Config = {
           title: '模组',
           items: [
             {label: '潮汐培育', to: '/docs/tidal-nursery/overview'},
+            {label: '炼狱培育', to: '/docs/infernal-nursery/overview'},
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '潮汐观测卡', to: '/docs/tidal-observation-card/overview'},
             {label: '辑录与揭秘', to: '/docs/reveal/overview'},

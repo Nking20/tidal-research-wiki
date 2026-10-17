@@ -13,8 +13,13 @@ const entries = [
   },
   {
     title: '潮汐培育',
-    description: '采样、培育皿护理、七种样本、基因共生与生态复原。',
+    description: '九种样本、基因 2.0、培养护理、自动化与生态复原',
     to: '/docs/tidal-nursery/overview',
+  },
+  {
+    title: '炼狱培育',
+    description: '四种下界样本、组织采样、熔育槽温控与特殊事件',
+    to: '/docs/infernal-nursery/overview',
   },
   {
     title: '潮汐委托',

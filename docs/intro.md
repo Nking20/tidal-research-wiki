@@ -12,7 +12,8 @@ title: Wiki 总览
 
 ## 当前已整理
 
-- **潮汐培育**：围绕水域采样、培育皿护理、样本基因、自动化和生态复原的育成型模组。
+- **潮汐培育**：九种水生样本、培养护理、基因 2.0、自动化与生态复原
+- **炼狱培育**：潮汐培育的下界扩展，四种样本、组织采样与熔育槽温控
 - **潮汐委托**：围绕委托板、任务来源、委托卡、玩家委托和数据包扩展的任务型模组。
 - **潮汐观测卡**：围绕观测卡、等级、奖励池、轮转和服务器配置的抽取型模组。
 - **辑录与揭秘**：围绕辑录册、揭秘集、来源分类、章节解锁和数据包内容扩展的阅读收集型模组。
@@ -25,6 +26,9 @@ title: Wiki 总览
 
 - [潮汐培育总览](./tidal-nursery/overview.md)
 - [潮汐培育采样与开局](./tidal-nursery/sampling.md)
+- [基因系统 2.0](./tidal-nursery/genetics.md)
+- [炼狱培育总览](./infernal-nursery/overview.md)
+- [熔育槽温控](./infernal-nursery/molten-vat.md)
 - [潮汐委托总览](./tidal-commission/overview.md)
 - [潮汐委托配置](./tidal-commission/config.md)
 - [潮汐委托任务 JSON](./tidal-commission/datapack.md)
