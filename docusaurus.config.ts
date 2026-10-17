@@ -28,6 +28,15 @@ const config: Config = {
     locales: ['zh-Hans'],
   },
 
+  // Cloudflare automatically tracks page loads and SPA navigation; load only once.
+  scripts: [
+    {
+      src: 'https://static.cloudflareinsights.com/beacon.min.js',
+      type: 'module',
+      'data-cf-beacon': JSON.stringify({token: 'aeccdbaa9d3c4146b43282b6cb2776f0'}),
+    },
+  ],
+
   presets: [
     [
       'classic',
