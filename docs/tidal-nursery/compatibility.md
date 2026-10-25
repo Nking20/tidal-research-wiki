@@ -4,11 +4,11 @@ title: 安装、配置与问题排查
 
 # 安装、配置与问题排查
 
-潮汐培育 **1.0.4-alpha** 适用于 Minecraft **1.21.1 NeoForge**，需要 Java **21** 和 GeckoLib
+潮汐培育 **1.0.8-alpha** 适用于 Minecraft **1.21.1**，需要 **NeoForge 21.1.219 或更新的相容 21.1.x 版本**和 **Java 21**
 
 ## 安装与联动
 
-GeckoLib 使用版本以发布包的依赖要求为准
+同时安装炼狱培育时，按[炼狱依赖说明](../infernal-nursery/compatibility.md)准备 GeckoLib
 
 | 可选模组 | 用途 |
 | --- | --- |
@@ -28,6 +28,26 @@ GeckoLib 使用版本以发布包的依赖要求为准
 
 文档数值采用默认配置，时间按 20 TPS 计算，整合包配置与数据包可覆盖对应规则
 
+## 海洋园艺配置
+
+`tidalnursery-common.toml` 的 `oceanGardening` 分组
+
+| 键 | 默认值 | 用途 |
+| --- | ---: | --- |
+| `lettuceSpreadEnabled` | `true` | 成熟海莴苣自然蔓延开关 |
+| `lettuceSpreadChance` | `0.05` | 每次成熟植株随机刻尝试蔓延的概率 |
+| `lettuceColonyLimit` | `6` | 蔓延后相连群落的株数上限 |
+| `lettuceWorldgenMinColony` | `3` | 自然群落最少株数 |
+| `lettuceWorldgenMaxColony` | `7` | 自然群落最多株数 |
+
+手动种植与自然生成群落按各自条件处理，蔓延限制不会把已有大群落自动删减
+
+## 工具配置
+
+`oceanTools` 分组中，`inkCloudTicks` 默认为 160，`inkCloudRadius` 默认为 3，`bindingTicks` 默认为 80
+
+具体效果见[投掷工具](./tools.md#投掷工具)
+
 ## 数据兼容
 
 升级前备份世界，遇到无法识别的样本或档案时保留原物品、世界和日志，提供来源版本以便排查
@@ -42,5 +62,7 @@ GeckoLib 使用版本以发布包的依赖要求为准
 | 不能导入档案 | 是否为有效的记录载体 |
 | 重构无法开始 | 同物种档案、选中组、定向繁育剂、输出槽和加工状态 |
 | 成年事件暂停 | 按显示原因处理饱食、健康、水量、温度或护理，并腾出产物空间 |
+| 消化池没有加工 | 是否合盖、是否足够一批、产物是否满、本次合盖是否已经完成 |
+| 海洋植物不成长 | 水体、附着支撑、海葡萄第二格空间和所在区块随机刻状态 |
 
 反馈时提供游戏、加载器、模组版本，复现步骤和 `logs/latest.log` 对应时间段

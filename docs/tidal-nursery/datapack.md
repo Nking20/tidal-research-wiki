@@ -30,10 +30,17 @@ title: 数据包配方与扩展边界
 | `amplifier` | 仅调律砧可选，省略时要求增幅槽为空 |
 | `count` | 材料数量，默认 1，普通机器原料允许 1～64 |
 | `duration` | 刻数，20 刻约 1 秒，允许 1～72000 |
+| `copy_input_components` | 默认 `false`，仅调律砧允许开启，复制同种输入物品的组件并合并输出数据补丁 |
 
 原料可以使用物品 ID 或标签，输出槽占用、数量不足或多放了不匹配的增幅物会阻止加工，水桶等原料的容器会返还
 
 同 namespace 和路径覆盖现有配方，新路径增加配方，JEI 读取已加载的同一份配方
+
+### 保留装备组件
+
+`copy_input_components: true` 适用于输入与输出为同一种物品的调律，输出补丁覆盖指定字段，命名、损伤与其他组件从输入保留，`minecraft:custom_data` 采用合并方式
+
+炼狱的 `data/infernalnursery/recipe/attunement/paraglider_long_range.json` 等配方采用这一字段，可用作同物品数据调律的参考
 
 ## 珊瑚苗床示例
 
@@ -56,12 +63,24 @@ title: 数据包配方与扩展边界
 - `tidalnursery:materials/active_gels`：默认活性胶质，安装炼狱后可包含高纯熔胶
 - `tidalnursery:materials/glowing_ink`：默认荧光墨囊
 - `tidalnursery:basic_feed_plants`：基础饲料植物位
+- `tidalnursery:recipe/coral_fragments`：珊瑚建材的珊瑚原料
+- `tidalnursery:biomass_inputs` 及 `tidalnursery:biomass/value_1` 等价值标签：消化池输入与生物质数值
 
 在 `data/<namespace>/tags/item/` 中增补对应标签
 
+园艺基底使用方块标签 `tidalnursery:sea_grapes_substrates`、`tidalnursery:sea_lettuce_supports`，路径为 `tags/block/`
+
+## 自然生成和探索奖励
+
+- 海洋园艺：`worldgen/configured_feature/`、`worldgen/placed_feature/` 中的 `sea_grapes`、`sea_lettuce`，以及对应 `neoforge/biome_modifier/` 和群系标签
+- 遗失设施：`worldgen/structure/` 中的三种结构，及 `worldgen/structure_set/lost_facilities.json`
+- 设施战利品：`loot_table/chests/lost_sampling_station.json`、`lost_cultivation_site.json`、`lost_supply_cache.json`
+
+以上文件位于 `data/tidalnursery/`，可按同路径覆盖，命令与设施名称见[海底遗失设施](./exploration.md)
+
 ## 哪些内容不能用这类配方替代
 
-样本成长、特殊事件、装备数据调律、返祖以及基因组合校验由代码处理
+样本成长、特殊事件、带专属校验的装备强化、返祖以及基因组合校验由代码处理，普通数据补丁配方不能代替这些专属条件
 
 新增物种或基因拓展需要代码注册，炼狱复用核心的样本、档案和三组规则，并注册自己的两个温控位点
 
