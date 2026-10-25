@@ -23,7 +23,6 @@ title: 安装、配置与问题排查
 ## 配置位置
 
 - 采样、培养、饲料和基础数值：`config/tidalnursery-common.toml`
-- 河神：`config/tidalnursery/river_god.json5`
 - 炼狱温控与事件：[炼狱配置说明](../infernal-nursery/compatibility.md)
 
 文档数值采用默认配置，时间按 20 TPS 计算，整合包配置与数据包可覆盖对应规则

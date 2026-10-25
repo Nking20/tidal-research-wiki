@@ -24,7 +24,6 @@ const sidebars: SidebarsConfig = {
         'tidal-nursery/materials',
         'tidal-nursery/attunement',
         'tidal-nursery/progression',
-        'tidal-nursery/river-god',
         'tidal-nursery/compatibility',
         'tidal-nursery/datapack',
       ],
