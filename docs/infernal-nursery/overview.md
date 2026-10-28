@@ -2,7 +2,11 @@
 title: 炼狱培育总览
 ---
 
+import NurseryGallery, {infernalStarter} from '@site/src/components/NurseryGallery';
+
 # 炼狱培育
+
+<NurseryGallery items={infernalStarter} label="炼狱培育的采样和温控组件" />
 
 炼狱培育是潮汐培育的下界扩展，将采样、成长与基因收藏接入熔育槽，培养重点由水量和光照转向温度与介质
 

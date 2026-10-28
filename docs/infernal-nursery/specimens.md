@@ -2,7 +2,11 @@
 title: 炼狱样本与特殊事件
 ---
 
+import NurseryGallery, {infernalSpecimens} from '@site/src/components/NurseryGallery';
+
 # 炼狱样本与特殊事件
+
+<NurseryGallery items={infernalSpecimens} label="四种下界样本的物品外观" />
 
 ## 样本表
 

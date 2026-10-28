@@ -13,7 +13,7 @@ const entries = [
   },
   {
     title: '潮汐培育',
-    description: '九种样本、基因 2.0、培养护理、自动化与生态复原',
+    description: '十种样本、基因 2.0、培养护理、自动化与生态复原',
     to: '/docs/tidal-nursery/overview',
   },
   {
