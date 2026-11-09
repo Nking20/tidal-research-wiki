@@ -93,6 +93,18 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: ['tidal-market/overview'],
     },
+    {
+      type: 'category',
+      label: '旧界残响',
+      collapsed: false,
+      items: [
+        'relict/overview',
+        'relict/getting-started',
+        'relict/old-world',
+        'relict/mobs',
+        'relict/relics',
+      ],
+    },
     'changelog',
   ],
 };

@@ -36,6 +36,11 @@ const entries = [
     description: '辑录内容、来源、解锁配置和数据包章节写法。',
     to: '/docs/reveal/overview',
   },
+  {
+    title: '旧界残响',
+    description: '用旧照片进入旧世界，探索历史遗迹、生物与旧版玩法。',
+    to: '/docs/relict/overview',
+  },
 ];
 
 function EntryCard({title, description, to}: (typeof entries)[number]) {

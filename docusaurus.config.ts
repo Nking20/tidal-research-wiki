@@ -90,6 +90,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/docs/relict/overview',
+          label: '旧界残响',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/Nking20/tidal-research-wiki',
           label: 'GitHub',
           position: 'right',
@@ -107,6 +112,7 @@ const config: Config = {
             {label: '炼狱培育', to: '/docs/infernal-nursery/overview'},
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '辑录与揭秘', to: '/docs/reveal/overview'},
+            {label: '旧界残响', to: '/docs/relict/overview'},
           ],
         },
         {
@@ -117,6 +123,7 @@ const config: Config = {
             {label: '潮汐委托', to: '/docs/tidal-commission/overview'},
             {label: '潮汐观测卡', to: '/docs/tidal-observation-card/overview'},
             {label: '辑录与揭秘', to: '/docs/reveal/overview'},
+            {label: '旧界残响', to: '/docs/relict/overview'},
             {label: '潮汐市场', to: '/docs/tidal-market/overview'},
           ],
         },
