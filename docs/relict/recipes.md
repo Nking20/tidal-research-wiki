@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # 配方索引
 
-收录模组当前数据文件里的 133 条常规配方。岁月尘的 47 对映射和批量规则单列在[方块转换白名单](./conversion.md)。
+这页查常用的旧世界配方。毒马铃薯的配方单列在[毒马铃薯地区](./poisonous-potato.md#常用配方)。岁月尘的 47 对映射和批量规则单列在[方块转换白名单](./conversion.md)。
 
 工作台图样按从上到下读取，斜杠分隔行，点号表示空格，符号对应材料栏。物品以完整注册 ID 标识，`#` 表示标签中任一物品，材料栏用「或」分隔可替换的材料。
 
@@ -83,12 +83,12 @@ sidebar_position: 6
 | 铁镐 × 1 | `relict:iron_pickaxe` | 有序 | `XXX / .#. / .#.` `#` = `minecraft:stick`, `X` = `relict:iron_ingot` |
 | 铁锹 × 1 | `relict:iron_shovel` | 有序 | `X / # / #` `#` = `minecraft:stick`, `X` = `relict:iron_ingot` |
 | 铁剑 × 1 | `relict:iron_sword` | 有序 | `X / X / #` `#` = `minecraft:stick`, `X` = `relict:iron_ingot` |
-| 矿掘TNT × 1 | `relict:mining_tnt` | 有序 | `.I. / STS / .I.` `I` = `relict:iron_ingot`, `S` = `minecraft:string`, `T` = `minecraft:tnt` |
+| 矿掘TNT × 1 | `relict:mining_tnt` | 有序 | `.I. / STS / .I.` `I` = `relict:iron_ingot`, `S` = `minecraft:string`, `T` = `relict:classic_tnt` |
 | 苔石 × 1 | `relict:mossy_cobblestone` | 无序 | `relict:cobblestone`, `minecraft:moss_block` |
-| 下界反应核 × 1 | `relict:nether_reactor_core` | 有序 | `IDI / IDI / IDI` `D` = `minecraft:diamond`, `I` = `minecraft:iron_ingot` 或 `relict:iron_ingot` |
+| 下界反应核 × 1 | `relict:nether_reactor_core` | 有序 | `IDI / IDI / IDI` `D` = `relict:diamond`, `I` = `relict:iron_ingot` |
 | 橡木木板 × 4 | `relict:oak_planks` | 无序 | `relict:oak_log` |
 | 橡木楼梯 × 4 | `relict:oak_stairs` | 有序 | `#.. / ##. / ###` `#` = `relict:oak_planks` |
-| 相册 × 1 | `relict:old_album` | 有序 | `.P. / PBP / .G.` `B` = `minecraft:book`, `G` = `minecraft:glass_pane`, `P` = `#minecraft:planks` |
+| 相册 × 1 | `relict:old_album` | 有序 | `.P. / PBP / .G.` `B` = `minecraft:book`, `G` = `relict:old_glass_pane`, `P` = `#relict:wood_planks` |
 | 圆石楼梯 × 4 | `relict:old_cobblestone_stairs` | 有序 | `#.. / ##. / ###` `#` = `relict:cobblestone` |
 | 玻璃板 × 16 | `relict:old_glass_pane` | 有序 | `GGG / GGG` `G` = `relict:glass` |
 | 木门 × 1 | `relict:old_oak_door` | 有序 | `PP / PP / PP` `P` = `#relict:wood_planks` |

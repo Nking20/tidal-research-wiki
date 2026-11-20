@@ -5,7 +5,9 @@ sidebar_position: 11
 
 # 版本与存档兼容
 
-本文对应 Relict 0.2.0 的当前开发源码，目标为 Minecraft Java 1.21.1、NeoForge 21.1.219、Java 21。同为 0.2.0 的早期打包文件可能缺少经典狼或居民背包等后续内容。整合包与联机排查时，先核对客户端、服务器安装的实际 JAR。
+本文对应 Relict **0.4.7**（Minecraft Java 1.21.1、NeoForge 21.1.219、Java 21）。服务器和客户端应使用同一版本。
+
+已生成的区块不会补长巨木树林，也不会重铺坐标墙或重做马铃薯晶洞。想看新版地形要探索新区块。旧相册方块仍能用，但从 0.4.6 起，它只会开启通往旧世界的单向入口。
 
 ## 常见命名差异
 
@@ -19,6 +21,7 @@ sidebar_position: 11
 | `relict:redstone_wire_item` | `minecraft:redstone` |
 | `relict:tripwire_item` | `minecraft:string` |
 | `relict:classic_jukebox` | `minecraft:jukebox` |
+| `relict:potato_villager` | `minecraft:villager`，保留马铃薯外观标记 |
 
 上表为模组提供的部分注册别名。编写新脚本和数据包时可直接使用当前项。曾以 `relict:human` 保存的过渡版居民会按存档数据识别。带有整数 `HumanProfile` 且没有 `ClassicHeading` 的实体会转为 `relict:human_npc`。当前的 `relict:human` 对应四肢乱晃史蒂夫，黑面史蒂夫的 ID 是 `relict:low_head_steve`。
 

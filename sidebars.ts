@@ -102,6 +102,8 @@ const sidebars: SidebarsConfig = {
         'relict/getting-started',
         'relict/old-world',
         'relict/structures',
+        'relict/poisonous-potato',
+        'relict/april-fools',
         'relict/materials',
         'relict/recipes',
         'relict/conversion',
