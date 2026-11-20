@@ -52,6 +52,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'tidal-commission/overview',
         'tidal-commission/author-guide',
+        'tidal-commission/task-lines',
         'tidal-commission/status',
         'tidal-commission/gameplay',
         'tidal-commission/config',

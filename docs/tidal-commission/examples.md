@@ -71,44 +71,9 @@ title: 按需求配置任务
 
 完成后选择其中一项，确认另一项不会发放。这里没有 `primary`，所以没有额外固定奖励；如需固定加可选，在同一个 `rewards` 对象里加入 `primary`。
 
-## 完成 A 后才能抽到 B
+## 制作连续剧情
 
-复制上手指南的完整任务为两个文件，按表替换字段。两份都保留 `source: "official"` 和 `tier: 1`。
-
-| 字段 | `tutorial_a.json` | `tutorial_b.json` |
-| --- | --- | --- |
-| `id` | `tutorial:a` | `tutorial:b` |
-| `brief_description` | `任务 A` | `任务 B` |
-| `full_description` | `提交一个铁锭。` | `完成任务 A 后，提交一个铁锭。` |
-| `repeat` | `{ "mode": "once" }` | `{ "mode": "once" }` |
-| `prerequisites` | `[]` | `["tutorial:a"]` |
-
-两份文件放在 `config/tidalcommission/tasks/official/` 后重载。在隔离测试实例中只保留这两个任务，用没有相关完成历史的玩家正常抽取：
-
-1. 完成 A 前，应只能抽到 A。
-2. 完成 A 的提交结算后，B 获得抽取资格。
-3. 等待可用栏位和新的抽取机会，确认 B 能出现。
-4. 两项都完成后，因为都是 `once`，不应再次进入该玩家的抽取池。
-
-不要用管理器「测试」装入 B 来验证前置，它会绕过资格检查。重载不会清空玩家完成历史。
-
-### 两条前置共同解锁 C
-
-要 A 和 B 都完成才开放 C，让 A、B 的 `prerequisites` 都为空，再复制一份完整任务创建 `tutorial_c.json` 并替换以下字段：
-
-```json
-{
-  "id": "tutorial:c",
-  "brief_description": "任务 C",
-  "full_description": "完成任务 A 和任务 B 后，提交一个铁锭。",
-  "repeat": { "mode": "once" },
-  "prerequisites": ["tutorial:a", "tutorial:b"]
-}
-```
-
-目标、奖励等保留。只完成 A 时 C 不应出现；A、B 都完成后 C 才具备资格。可以有更多节点，但不能出现自身依赖或循环。
-
-这些名称只用于辨认测试顺序。写自己的内容时替换简介和正文即可，前置关系取决于 ID。当前前置系统不提供立即派发下一章或任意前置，不能仅靠前置字段实现互斥剧情分支。
+线性后续、同时开放的分支、多前置汇合和优先出现需要同时配置 `prerequisites`、`unlock_mode` 和任务线。请按[任务线教程](./task-lines.md)完成“船坞重启计划”示例，其中包含两条普通分支、一个优先后续和一个双前置汇合委托。
 
 ## 完成一小时后才能再接到
 

@@ -80,6 +80,7 @@ data/tidalcommission/tidal_commission_tasks/<来源>/<文件>.json
 | `rewards` | 固定奖励、可选方案，或两者同时存在。 |
 | `repeat` | 可选的重复完成规则。 |
 | `prerequisites` | 可选的前置任务 ID 数组。 |
+| `unlock_mode` | 前置全部完成后的出现方式：`random` 或 `immediate`，默认为 `random`。 |
 | `stage_rules` | 可选的阶段条件与权重修正，见[阶段与诊断](./stages.md)。 |
 
 ## 目标类型
@@ -192,7 +193,8 @@ data/tidalcommission/tidal_commission_tasks/<来源>/<文件>.json
 },
 "prerequisites": [
   "my_pack:harbor_supplies"
-]
+],
+"unlock_mode": "immediate"
 ```
 
 `repeat.mode` 支持 `unlimited`、`once`、`cooldown`、`daily`、`weekly`。使用 `cooldown` 时通过 `cooldown_seconds` 设置间隔；`max_completions` 大于 0 时还会限制总完成次数。
@@ -203,12 +205,12 @@ data/tidalcommission/tidal_commission_tasks/<来源>/<文件>.json
 
 - 留空或省略此字段，表示没有前置委托限制。
 - 填写多个 ID 时，玩家必须全部完成；只接取、放弃或超时不算完成。
-- 完成前置后，后续委托才有资格被抽取，仍受来源、档位、阶段条件、重复规则及抽取权重等限制。
-- 后续委托不会立即弹出或自动接取，因此故事链各章节之间可能需要等待新的抽取机会。
+- `unlock_mode: "random"` 表示后续委托获得抽取资格，仍受来源、档位、阶段条件、重复规则及抽取权重等限制。
+- `unlock_mode: "immediate"` 表示后续委托进入等待队列，在有普通空闲栏位时直接出现。它不会挤掉现有委托，也不会自动接取。
 
 ### 在游戏内编辑器中设置
 
-打开委托编辑器，在条件页面找到「前置委托 ID」，填写上一章的完整 ID。多个 ID 使用英文逗号分隔，例如：
+打开委托编辑器的“条件”页，使用前置委托选择器加入上一章，再选择“进入随机池”或“优先出现”。JSON 中对应的前置列表例如：
 
 ```text
 my_pack:harbor_story_01, my_pack:harbor_story_side
@@ -264,6 +266,20 @@ tutorial:a  ->  tutorial:b  ->  tutorial:c
 任务 C 写入 `"prerequisites": ["tutorial:a", "tutorial:b"]`，表示 A 和 B 都完成后才获得资格。`objective_logic` 不会改变这个“全部前置”的规则。
 
 不要填写不存在的 ID、把自己设为前置，或配置循环关系。发布后应保持任务 ID 稳定，因为前置关系和玩家完成记录都通过 ID 对应。可直接使用[按需求配置任务](./examples.md)中的测试步骤验证关系。
+
+需要把多份委托整理成玩家可查看的故事线时，阅读[任务线教程](./task-lines.md)。任务线 JSON 位于 `config/tidalcommission/task_lines/`，使用以下结构：
+
+```json
+{
+  "id": "my_pack:harbor_story",
+  "title": "港口复工",
+  "description": "从材料准备到货船出港。",
+  "icon": "minecraft:oak_boat",
+  "tasks": ["my_pack:materials", "my_pack:repairs", "my_pack:departure"]
+}
+```
+
+`tasks` 的顺序用于展示；真正的解锁关系仍写在各任务的 `prerequisites` 和 `unlock_mode` 中。
 
 ## 接取后无期限任务
 
