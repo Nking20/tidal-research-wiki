@@ -7,7 +7,7 @@ sidebar_position: 11
 
 本文对应 Relict **0.4.7**（Minecraft Java 1.21.1、NeoForge 21.1.219、Java 21）。服务器和客户端应使用同一版本。
 
-已生成的区块不会补长巨木树林，也不会重铺坐标墙或重做马铃薯晶洞。想看新版地形要探索新区块。旧相册方块仍能用，但从 0.4.6 起，它只会开启通往旧世界的单向入口。
+巨木树林、坐标墙、马铃薯晶洞和红宝石矿的生成改动只对新区块生效。老存档里的相册仍能用。可以清出门框位置，再拿照片右键相册，按[相册门的用法](./getting-started.md#开门)配对。
 
 ## 常见命名差异
 
@@ -45,4 +45,3 @@ sidebar_position: 11
 | 查找遗迹及其候选位置 | `data/relict/worldgen/structure/`、`data/relict/worldgen/structure_set/` |
 | 查找遗迹物资 | `data/relict/loot_table/chests/` |
 | 引用旧界木板 | `#relict:wood_planks` |
-| 查找配方或核对物品 ID | [配方索引](./recipes.md)、[方块转换白名单](./conversion.md) |

@@ -106,7 +106,6 @@ const sidebars: SidebarsConfig = {
         'relict/poisonous-potato',
         'relict/april-fools',
         'relict/materials',
-        'relict/recipes',
         'relict/conversion',
         'relict/mobs',
         'relict/relics',
